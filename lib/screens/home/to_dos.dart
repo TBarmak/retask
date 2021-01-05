@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:retask/constants.dart';
 import 'package:retask/models/to_do.dart';
 import 'package:retask/services/to_do_service.dart';
 import 'package:intl/intl.dart';
@@ -17,13 +18,6 @@ class _ToDosState extends State<ToDos> {
     super.initState();
     data = getToDos();
   }
-
-  /// A list for coloring the ToDo tiles according to their importance
-  final List<Color> importanceColors = [
-    Colors.green,
-    Colors.yellow,
-    Colors.red
-  ];
 
   /// Build a Card from a ToDo instance
   Card buildTile(context, index) {
@@ -99,9 +93,17 @@ class _ToDosState extends State<ToDos> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(backgroundColor: Colors.blue, title: Text('To-Dos')),
+        appBar: AppBar(backgroundColor: Colors.blue, title: Text("To-Do's")),
         body: ListView.builder(itemCount: data.length, itemBuilder: buildTile),
-        floatingActionButton:
-            FloatingActionButton(onPressed: () {}, child: Icon(Icons.add)));
+        floatingActionButton: FloatingActionButton(
+            onPressed: () async {
+              dynamic result = await Navigator.pushNamed(context, '/new_todo');
+              if (result != null) {
+                setState(() {
+                  data.add(result['todo']);
+                });
+              }
+            },
+            child: Icon(Icons.add)));
   }
 }
