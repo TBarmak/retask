@@ -13,10 +13,12 @@ class _ToDosState extends State<ToDos> {
   /// A list storing all of the ToDo items
   List<ToDo> data;
 
+  ToDoService toDoService = ToDoService();
+
   @override
   void initState() {
     super.initState();
-    data = getToDos();
+    data = toDoService.getToDos();
   }
 
   /// Build a Card from a ToDo instance
@@ -41,7 +43,9 @@ class _ToDosState extends State<ToDos> {
         width: 50,
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           Icon(Icons.hourglass_top_outlined, color: Colors.grey[600]),
-          Text(durationToString(todo.durationRemaining, concise: true),
+          Text(
+              toDoService.durationToString(todo.durationRemaining,
+                  concise: true),
               style: TextStyle(color: Colors.grey[600]))
         ]),
       );
@@ -51,7 +55,7 @@ class _ToDosState extends State<ToDos> {
         child: IconButton(
             onPressed: () {
               setState(() {
-                toggleCompleted(todo);
+                toDoService.toggleCompleted(todo);
               });
             },
             icon: Icon(
@@ -77,7 +81,7 @@ class _ToDosState extends State<ToDos> {
   String getSubtitle(ToDo todo) {
     List parts = [];
     if (todo.duration != null) {
-      parts.add(durationToString(todo.duration));
+      parts.add(toDoService.durationToString(todo.duration));
     } else if (todo.numTimes != 1) {
       parts.add(todo.numTimes.toString() + " times");
     }
@@ -101,6 +105,7 @@ class _ToDosState extends State<ToDos> {
               if (result != null) {
                 setState(() {
                   data.add(result['todo']);
+                  toDoService.addTodo(result['todo']);
                 });
               }
             },
