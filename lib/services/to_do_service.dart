@@ -56,6 +56,10 @@ class ToDoService {
     sampleData.add(todo);
   }
 
+  void deleteTodo(todo) {
+    sampleData.remove(todo);
+  }
+
   /// Toggle the completed attribute of a ToDo instance
   void toggleCompleted(ToDo todo) {
     todo.completed = !todo.completed;

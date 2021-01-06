@@ -32,7 +32,21 @@ class _ToDosState extends State<ToDos> {
           leading: getLeading(data[index]),
           title: Text("${data[index].task}"),
           subtitle: Text(getSubtitle(data[index])),
-          trailing: IconButton(onPressed: () {}, icon: Icon(Icons.more_vert))),
+          trailing: PopupMenuButton(
+            onSelected: (func) {
+              setState(() {
+                func();
+              });
+            },
+            child: Icon(Icons.more_vert),
+            itemBuilder: (context) {
+              return [
+                PopupMenuItem(
+                    child: Text("Delete"),
+                    value: () => toDoService.deleteTodo(data[index]))
+              ];
+            },
+          )),
     );
   }
 
