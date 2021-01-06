@@ -52,17 +52,17 @@ class ToDoService {
     return sampleData;
   }
 
-  void addTodo(todo) {
-    sampleData.add(todo);
+  void addToDo(toDo) {
+    sampleData.add(toDo);
   }
 
-  void deleteTodo(todo) {
-    sampleData.remove(todo);
+  void deleteToDo(toDo) {
+    sampleData.remove(toDo);
   }
 
   /// Toggle the completed attribute of a ToDo instance
-  void toggleCompleted(ToDo todo) {
-    todo.completed = !todo.completed;
+  void toggleCompleted(ToDo toDo) {
+    toDo.completed = !toDo.completed;
   }
 
   // TODO: Implement sorting methods to sort by importance and due date

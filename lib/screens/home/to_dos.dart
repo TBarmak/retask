@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:retask/constants.dart';
 import 'package:retask/models/to_do.dart';
+import 'package:retask/screens/home/complete_to_do_form.dart';
 import 'package:retask/services/to_do_service.dart';
 import 'package:intl/intl.dart';
 
@@ -21,6 +22,15 @@ class _ToDosState extends State<ToDos> {
     data = toDoService.getToDos();
   }
 
+  /// Show pop up menu where the user can complete the task
+  void _showCompleteTaskPanel(ToDo toDo) {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return CompleteToDoForm(toDo);
+        });
+  }
+
   /// Build a Card from a ToDo instance
   Card buildTile(context, index) {
     return Card(
@@ -28,7 +38,9 @@ class _ToDosState extends State<ToDos> {
           left: BorderSide(
               color: importanceColors[data[index].importance], width: 10)),
       child: ListTile(
-          onTap: () {},
+          onTap: () {
+            _showCompleteTaskPanel(data[index]);
+          },
           leading: getLeading(data[index]),
           title: Text("${data[index].task}"),
           subtitle: Text(getSubtitle(data[index])),
@@ -43,7 +55,7 @@ class _ToDosState extends State<ToDos> {
               return [
                 PopupMenuItem(
                     child: Text("Delete"),
-                    value: () => toDoService.deleteTodo(data[index]))
+                    value: () => toDoService.deleteToDo(data[index]))
               ];
             },
           )),
@@ -118,7 +130,7 @@ class _ToDosState extends State<ToDos> {
               dynamic result = await Navigator.pushNamed(context, '/new_to_do');
               if (result != null) {
                 setState(() {
-                  toDoService.addTodo(result['toDo']);
+                  toDoService.addToDo(result['toDo']);
                 });
               }
             },
