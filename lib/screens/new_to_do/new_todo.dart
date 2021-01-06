@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:retask/models/to_do.dart';
-import 'package:retask/screens/new_todo/enter_due_date.dart';
-import 'package:retask/screens/new_todo/enter_duration.dart';
-import 'package:retask/screens/new_todo/enter_num_times.dart';
-import 'package:retask/screens/new_todo/enter_recur_window.dart';
-import 'package:retask/screens/new_todo/enter_recurring.dart';
-import 'package:retask/screens/new_todo/enter_task.dart';
-import 'package:retask/screens/new_todo/enter_time_based.dart';
+import 'package:retask/screens/new_to_do/enter_due_date.dart';
+import 'package:retask/screens/new_to_do/enter_duration.dart';
+import 'package:retask/screens/new_to_do/enter_num_times.dart';
+import 'package:retask/screens/new_to_do/enter_recur_window.dart';
+import 'package:retask/screens/new_to_do/enter_recurring.dart';
+import 'package:retask/screens/new_to_do/enter_task.dart';
+import 'package:retask/screens/new_to_do/enter_time_based.dart';
 
 class NewTodo extends StatefulWidget {
   @override
@@ -265,7 +265,7 @@ class _NewTodoState extends State<NewTodo> {
             recurTimes: recurTimes,
             recurWindow: recurWindow,
             importance: importance);
-        Navigator.pop(context, {'todo': result});
+        Navigator.pop(context, {'toDo': result});
       }
 
       return EnterNumTimes(complete, getRecurWindow, getNumTimes, setNumTimes);
@@ -278,7 +278,7 @@ class _NewTodoState extends State<NewTodo> {
             recurTimes: recurTimes,
             recurWindow: recurWindow,
             importance: importance);
-        Navigator.pop(context, {'todo': result});
+        Navigator.pop(context, {'toDo': result});
       }
 
       return EnterDuration(complete, getHours, setHours, getMinutes, setMinutes,

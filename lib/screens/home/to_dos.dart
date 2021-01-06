@@ -37,29 +37,29 @@ class _ToDosState extends State<ToDos> {
   }
 
   /// Build the leading widget for the ListTile
-  dynamic getLeading(ToDo todo) {
-    if (todo.duration != null) {
+  dynamic getLeading(ToDo toDo) {
+    if (toDo.duration != null) {
       return SizedBox(
         width: 50,
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           Icon(Icons.hourglass_top_outlined, color: Colors.grey[600]),
           Text(
-              toDoService.durationToString(todo.durationRemaining,
+              toDoService.durationToString(toDo.durationRemaining,
                   concise: true),
               style: TextStyle(color: Colors.grey[600]))
         ]),
       );
-    } else if (todo.numTimes == 1) {
+    } else if (toDo.numTimes == 1) {
       return SizedBox(
         width: 50,
         child: IconButton(
             onPressed: () {
               setState(() {
-                toDoService.toggleCompleted(todo);
+                toDoService.toggleCompleted(toDo);
               });
             },
             icon: Icon(
-                todo.completed
+                toDo.completed
                     ? Icons.check_box
                     : Icons.check_box_outline_blank,
                 color: Colors.grey[600])),
@@ -69,7 +69,7 @@ class _ToDosState extends State<ToDos> {
           width: 50,
           height: 50,
           child: Center(
-              child: Text(todo.timesRemaining.toString(),
+              child: Text(toDo.timesRemaining.toString(),
                   style: TextStyle(color: Colors.grey[600], fontSize: 20))),
           decoration: BoxDecoration(
               shape: BoxShape.circle,
@@ -78,18 +78,18 @@ class _ToDosState extends State<ToDos> {
   }
 
   /// Create the string subtitle for the tile based on a ToDo instance
-  String getSubtitle(ToDo todo) {
+  String getSubtitle(ToDo toDo) {
     List parts = [];
-    if (todo.duration != null) {
-      parts.add(toDoService.durationToString(todo.duration));
-    } else if (todo.numTimes != 1) {
-      parts.add(todo.numTimes.toString() + " times");
+    if (toDo.duration != null) {
+      parts.add(toDoService.durationToString(toDo.duration));
+    } else if (toDo.numTimes != 1) {
+      parts.add(toDo.numTimes.toString() + " times");
     }
-    if (todo.dueDate != null) {
-      parts.add("by " + DateFormat('M/d').format(todo.dueDate));
+    if (toDo.dueDate != null) {
+      parts.add("by " + DateFormat('M/d').format(toDo.dueDate));
     }
-    if (todo.recurTimes != 0) {
-      parts.add("recurring " + todo.recurWindow);
+    if (toDo.recurTimes != 0) {
+      parts.add("recurring " + toDo.recurWindow);
     }
     return parts.join(", ");
   }
@@ -101,11 +101,10 @@ class _ToDosState extends State<ToDos> {
         body: ListView.builder(itemCount: data.length, itemBuilder: buildTile),
         floatingActionButton: FloatingActionButton(
             onPressed: () async {
-              dynamic result = await Navigator.pushNamed(context, '/new_todo');
+              dynamic result = await Navigator.pushNamed(context, '/new_to_do');
               if (result != null) {
                 setState(() {
-                  data.add(result['todo']);
-                  toDoService.addTodo(result['todo']);
+                  toDoService.addTodo(result['toDo']);
                 });
               }
             },

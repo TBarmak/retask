@@ -31,7 +31,7 @@ class Home extends StatelessWidget {
                     style: TextStyle(fontSize: 40)),
                 RaisedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/todos');
+                      Navigator.pushNamed(context, '/to_dos');
                     },
                     color: Colors.blue,
                     child: Text("My To-Do's",
