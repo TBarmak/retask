@@ -301,7 +301,15 @@ class _NewTodoState extends State<NewTodo> {
                       goBack();
                     })
               ]),
-              getMenuScreen(),
+              AnimatedSwitcher(
+                child: getMenuScreen(),
+                transitionBuilder:
+                    (Widget child, Animation<double> animation) =>
+                        ScaleTransition(child: child, scale: animation),
+                duration: const Duration(milliseconds: 200),
+                switchInCurve: Curves.easeIn,
+                switchOutCurve: Curves.easeOut,
+              ),
               SizedBox(height: 10)
             ],
           ),
