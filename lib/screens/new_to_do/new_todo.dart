@@ -194,6 +194,7 @@ class _NewTodoState extends State<NewTodo> {
         } else {
           setState(() {
             recurringEntered = false;
+            recurTimes = null;
           });
         }
         dueDate = DateTime.now();
