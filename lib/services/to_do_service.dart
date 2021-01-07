@@ -1,68 +1,85 @@
 import 'package:retask/models/to_do.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ToDoService {
-  // Sample list of ToDos for testing before connecting to Firebase
-  final List<ToDo> sampleData = [
-    ToDo("Read a book",
-        numTimes: 1,
-        dueDate: DateTime.parse('2021-01-09'),
-        recurTimes: -1,
-        recurWindow: "weekly",
-        importance: 1),
-    ToDo("Read",
-        duration: Duration(hours: 5, minutes: 30),
-        dueDate: DateTime.parse('2021-01-09'),
-        recurTimes: -1,
-        recurWindow: "weekly",
-        importance: 1),
-    ToDo("Practice juggling",
-        duration: Duration(hours: 2, minutes: 13), importance: 1),
-    ToDo("End world hunger",
-        numTimes: 1,
-        dueDate: DateTime.parse('2021-01-09'),
-        recurTimes: 0,
-        importance: 2),
-    ToDo("Play chess",
-        duration: Duration(hours: 2),
-        dueDate: DateTime.parse('2021-01-09'),
-        recurTimes: 3,
-        recurWindow: "weekly"),
-    ToDo("Exercise",
-        numTimes: 5,
-        dueDate: DateTime.parse('2021-01-09'),
-        recurTimes: -1,
-        recurWindow: "weekly",
-        importance: 2),
-    ToDo("Code",
-        duration: Duration(hours: 1),
-        dueDate: DateTime.parse('2021-01-09'),
-        recurTimes: 4,
-        recurWindow: "daily",
-        importance: 2),
-    ToDo("Make money",
-        duration: Duration(minutes: 30, seconds: 30),
-        dueDate: DateTime.parse('2021-01-09'),
-        recurTimes: -1,
-        recurWindow: "daily",
-        importance: 2),
-  ];
+  final String uid;
+  ToDoService({this.uid});
 
-  /// Get a list of ToDos
-  List<ToDo> getToDos() {
-    return sampleData;
+  /// Reference to toDo collection reference
+  final CollectionReference toDosCollection =
+      FirebaseFirestore.instance.collection('toDos');
+
+  /// Creates a Map<String, dynamic> of a ToDo where each key in the map is a field of the ToDo object
+  Map<String, dynamic> toDoToMap(ToDo toDo) {
+    return {
+      "task": toDo.task,
+      "uid": toDo.uid,
+      "completed": toDo.completed,
+      "numTimes": toDo.numTimes,
+      "timesRemaining": toDo.timesRemaining,
+      // duration is stored as the number of seconds in the Duration, if it is not null
+      "duration": toDo.duration == null ? null : toDo.duration.inSeconds,
+      // durationRemaining is stored as the number of seconds in the Duration, if it is not null
+      "durationRemaining": toDo.durationRemaining == null
+          ? null
+          : toDo.durationRemaining.inSeconds,
+      // dueDate is stored as a string
+      "dueDate": toDo.dueDate.toString(),
+      "recurTimes": toDo.recurTimes,
+      "recurWindow": toDo.recurWindow,
+      "importance": toDo.importance
+    };
   }
 
-  void addToDo(toDo) {
-    sampleData.add(toDo);
+  /// Get a list of ToDos from a QuerySnapshot
+  List<ToDo> _toDoListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      return ToDo.specifyAll(
+        doc.data()['task'],
+        id: doc.id,
+        uid: doc.data()['uid'],
+        completed: doc.data()['completed'],
+        numTimes: doc.data()['numTimes'],
+        timesRemaining: doc.data()['timesRemaining'],
+        // duration must be constructed from the number of seconds
+        duration: doc.data()['duration'] == null
+            ? null
+            : Duration(seconds: doc.data()['duration']),
+        // durationRemaining must be constructed from the number of seconds
+        durationRemaining: doc.data()['durationRemaining'] == null
+            ? null
+            : Duration(seconds: doc.data()['durationRemaining']),
+        // dueDate string must be parsed
+        dueDate: DateTime.parse(doc.data()['dueDate']),
+        recurTimes: doc.data()['recurTimes'],
+        recurWindow: doc.data()['recurWindow'],
+        importance: doc.data()['importance'],
+      );
+    }).toList();
   }
 
-  void deleteToDo(toDo) {
-    sampleData.remove(toDo);
+  /// Stream for list of ToDos filtered by the uid of the user that is logged in
+  Stream<List<ToDo>> get toDos {
+    return toDosCollection
+        .where("uid", isEqualTo: uid)
+        .snapshots()
+        .map(_toDoListFromSnapshot);
   }
 
-  /// Toggle the completed attribute of a ToDo instance
+  /// Add a ToDo to the Firestore database
+  void addToDo(ToDo toDo) async {
+    toDo.uid = uid;
+    toDosCollection.add(toDoToMap(toDo));
+  }
+
+  /// Delete a ToDo from the Firestore database
+  void deleteToDo(ToDo toDo) {
+    toDosCollection.doc(toDo.id).delete();
+  }
+
+  /// Toggle the completed attribute of a ToDo instance in the Firestore Database
   void toggleCompleted(ToDo toDo) {
-    toDo.completed = !toDo.completed;
+    toDosCollection.doc(toDo.id).update({"completed": !toDo.completed});
   }
 
   // TODO: Implement sorting methods to sort by importance and due date

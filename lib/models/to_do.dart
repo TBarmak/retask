@@ -1,6 +1,12 @@
 import 'dart:core';
 
 class ToDo {
+  /// String representing the id of the document in the Firestore database
+  String id;
+
+  /// String representing the id of the user who created the ToDo
+  String uid;
+
   /// Boolean representing if the task has been completed
   bool completed;
 
@@ -31,6 +37,7 @@ class ToDo {
   /// Int representing the importance of the task (0-2: 0 = least important, 2 = most important)
   int importance;
 
+  /// Contructor used to create ToDos that are added to the Firestore database
   ToDo(this.task,
       {this.numTimes = 1,
       this.duration,
@@ -42,4 +49,20 @@ class ToDo {
     this.durationRemaining = duration;
     this.completed = false;
   }
+
+  /// Constructor used to create the ToDo from the QuerySnapshot from Firestore Database
+  ToDo.specifyAll(
+    this.task, {
+    this.id,
+    this.uid,
+    this.completed,
+    this.numTimes = 1,
+    this.timesRemaining,
+    this.duration,
+    this.durationRemaining,
+    this.dueDate,
+    this.recurTimes = 0,
+    this.recurWindow,
+    this.importance = 0,
+  });
 }
