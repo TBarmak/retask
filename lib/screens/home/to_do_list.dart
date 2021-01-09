@@ -4,6 +4,7 @@ import 'package:retask/constants.dart';
 import 'package:retask/models/to_do.dart';
 import 'package:intl/intl.dart';
 import 'package:retask/screens/home/complete_to_do_form.dart';
+import 'package:retask/screens/home/no_to_dos.dart';
 import 'package:retask/services/to_do_service.dart';
 
 class ToDoList extends StatefulWidget {
@@ -116,7 +117,8 @@ class _ToDoListState extends State<ToDoList> {
       );
     }
 
-    return ListView.builder(
-        itemCount: toDos == null ? 0 : toDos.length, itemBuilder: buildTile);
+    return toDos.length > 0
+        ? ListView.builder(itemCount: toDos.length, itemBuilder: buildTile)
+        : NoToDos();
   }
 }
