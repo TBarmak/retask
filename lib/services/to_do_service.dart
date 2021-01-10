@@ -92,6 +92,15 @@ class ToDoService {
         .update({"timesRemaining": toDo.timesRemaining - 1});
   }
 
+  /// Decrements the durationRemaining of the toDo by the duration argument
+  void decrementDurationRemaining(ToDo toDo, Duration duration) {
+    if ((toDo.durationRemaining - duration).inSeconds == 0 && !toDo.completed) {
+      toggleCompleted(toDo);
+    }
+    toDosCollection.doc(toDo.id).update(
+        {"durationRemaining": (toDo.durationRemaining - duration).inSeconds});
+  }
+
   // TODO: Implement sorting methods to sort by importance and due date
 
   /// Convert a duration to the form "x hr(s) y min", concise arg makes the output shorter when set to true
