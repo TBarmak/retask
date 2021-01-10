@@ -117,7 +117,7 @@ class _ToDoListState extends State<ToDoList> {
       );
     }
 
-    return toDos.length > 0
+    return (toDos ?? []).length > 0
         ? ListView.builder(itemCount: toDos.length, itemBuilder: buildTile)
         : NoToDos();
   }
