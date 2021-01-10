@@ -82,6 +82,16 @@ class ToDoService {
     toDosCollection.doc(toDo.id).update({"completed": !toDo.completed});
   }
 
+  /// Decrement the timesRemaining attribute of a ToDo instance in the Firestore Database. If timesRemaining was 1, the task is completed.
+  void decrementTimesRemaining(ToDo toDo) {
+    if (toDo.timesRemaining == 1 && !toDo.completed) {
+      toggleCompleted(toDo);
+    }
+    toDosCollection
+        .doc(toDo.id)
+        .update({"timesRemaining": toDo.timesRemaining - 1});
+  }
+
   // TODO: Implement sorting methods to sort by importance and due date
 
   /// Convert a duration to the form "x hr(s) y min", concise arg makes the output shorter when set to true

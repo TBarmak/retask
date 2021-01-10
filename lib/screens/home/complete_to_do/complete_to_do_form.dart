@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:retask/models/to_do.dart';
 import 'package:retask/screens/home/complete_to_do/complete_one_time.dart';
+import 'package:retask/screens/home/complete_to_do/decrement_times_remaining.dart';
 
 class CompleteToDoForm extends StatefulWidget {
   final ToDo toDo;
@@ -19,6 +20,6 @@ class _CompleteToDoFormState extends State<CompleteToDoForm> {
     } else if (widget.toDo.numTimes == 1) {
       return CompleteOneTime(widget.toDo);
     }
-    return Container();
+    return DecrementTimesRemaining(widget.toDo);
   }
 }
