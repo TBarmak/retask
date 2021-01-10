@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:retask/constants.dart';
 import 'package:retask/models/to_do.dart';
 import 'package:intl/intl.dart';
-import 'package:retask/screens/home/complete_to_do_form.dart';
+import 'package:retask/screens/home/complete_to_do/complete_to_do_form.dart';
 import 'package:retask/screens/home/no_to_dos.dart';
 import 'package:retask/services/to_do_service.dart';
 
