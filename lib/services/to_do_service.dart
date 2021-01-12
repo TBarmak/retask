@@ -82,6 +82,11 @@ class ToDoService {
     toDosCollection.doc(toDo.id).update({"completed": !toDo.completed});
   }
 
+  /// Updates the Firestore document according to the new attributes of the ToDo
+  void updateToDo(ToDo toDo) {
+    toDosCollection.doc(toDo.id).update(toDoToMap(toDo));
+  }
+
   /// Decrement the timesRemaining attribute of a ToDo instance in the Firestore Database. If timesRemaining was 1, the task is completed.
   void decrementTimesRemaining(ToDo toDo) {
     if (toDo.timesRemaining == 1 && !toDo.completed) {

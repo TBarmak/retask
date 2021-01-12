@@ -109,6 +109,16 @@ class _ToDoListState extends State<ToDoList> {
               itemBuilder: (context) {
                 return [
                   PopupMenuItem(
+                      child: Text("Edit"),
+                      value: () async {
+                        dynamic result = await Navigator.pushNamed(
+                            context, '/edit_to_do',
+                            arguments: {"toDo": toDos[index]});
+                        if (result != null) {
+                          toDoService.updateToDo(result["toDo"]);
+                        }
+                      }),
+                  PopupMenuItem(
                       child: Text("Delete"),
                       value: () => toDoService.deleteToDo(toDos[index]))
                 ];

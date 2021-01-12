@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:retask/models/my_user.dart';
+import 'package:retask/screens/edit_to_do/edit_to_do.dart';
 import 'package:retask/screens/home/to_dos.dart';
 import 'package:retask/screens/new_to_do/new_todo.dart';
 import 'package:retask/screens/wrapper.dart';
@@ -22,7 +23,8 @@ class MyApp extends StatelessWidget {
         routes: {
           '/': (context) => Wrapper(),
           '/to_dos': (context) => ToDos(),
-          '/new_to_do': (context) => NewTodo()
+          '/new_to_do': (context) => NewTodo(),
+          '/edit_to_do': (context) => EditToDo()
         },
       ),
     );
