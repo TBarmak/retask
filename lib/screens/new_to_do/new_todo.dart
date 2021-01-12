@@ -244,7 +244,7 @@ class _NewTodoState extends State<NewTodo> {
     } else if (!dueDateEntered) {
       void complete() {
         setState(() {
-          dueDate = dueDate ?? DateTime.now();
+          dueDate = dueDate;
           dueDateEntered = true;
         });
       }

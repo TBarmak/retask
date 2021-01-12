@@ -24,7 +24,7 @@ class ToDoService {
           ? null
           : toDo.durationRemaining.inSeconds,
       // dueDate is stored as a string
-      "dueDate": toDo.dueDate.toString(),
+      "dueDate": toDo.dueDate == null ? null : toDo.dueDate.toString(),
       "recurTimes": toDo.recurTimes,
       "recurWindow": toDo.recurWindow,
       "importance": toDo.importance
@@ -50,7 +50,9 @@ class ToDoService {
             ? null
             : Duration(seconds: doc.data()['durationRemaining']),
         // dueDate string must be parsed
-        dueDate: DateTime.parse(doc.data()['dueDate']),
+        dueDate: doc.data()['dueDate'] == null
+            ? null
+            : DateTime.parse(doc.data()['dueDate']),
         recurTimes: doc.data()['recurTimes'],
         recurWindow: doc.data()['recurWindow'],
         importance: doc.data()['importance'],

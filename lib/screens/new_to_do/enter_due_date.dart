@@ -57,6 +57,7 @@ class EnterDueDate extends StatelessWidget {
               margin: EdgeInsets.symmetric(horizontal: 10),
               child: RaisedButton(
                   onPressed: () {
+                    getDueDate() ?? setDueDate(DateTime.now());
                     complete();
                   },
                   color: Colors.white,
