@@ -108,8 +108,6 @@ class ToDoService {
         {"durationRemaining": (toDo.durationRemaining - duration).inSeconds});
   }
 
-  // TODO: Implement sorting methods to sort by importance and due date
-
   /// Convert a duration to the form "x hr(s) y min", concise arg makes the output shorter when set to true
   String durationToString(Duration duration, {bool concise = false}) {
     List parts = duration.toString().split(':');

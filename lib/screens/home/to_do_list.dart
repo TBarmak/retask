@@ -86,6 +86,20 @@ class _ToDoListState extends State<ToDoList> {
   Widget build(BuildContext context) {
     final toDos = Provider.of<List<ToDo>>(context);
 
+    /// Put completed tasks at the bottom, and sort alphabetically by task
+    int sortCompleted(a, b) {
+      if (a.completed && !b.completed) {
+        return 1;
+      } else if (b.completed && !a.completed) {
+        return -1;
+      } else {
+        return a.task.compareTo(b.task);
+      }
+    }
+
+    // Move completed tasks to the bottom of the list
+    toDos.sort(sortCompleted);
+
     /// Build a Card from a ToDo instance
     Card buildTile(context, index) {
       return Card(
