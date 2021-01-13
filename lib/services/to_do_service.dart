@@ -90,13 +90,13 @@ class ToDoService {
   }
 
   /// Decrement the timesRemaining attribute of a ToDo instance in the Firestore Database. If timesRemaining was 1, the task is completed.
-  void decrementTimesRemaining(ToDo toDo) {
-    if (toDo.timesRemaining == 1 && !toDo.completed) {
+  void decrementTimesRemaining(ToDo toDo, int times) {
+    if (toDo.timesRemaining - times == 0 && !toDo.completed) {
       toggleCompleted(toDo);
     }
     toDosCollection
         .doc(toDo.id)
-        .update({"timesRemaining": toDo.timesRemaining - 1});
+        .update({"timesRemaining": toDo.timesRemaining - times});
   }
 
   /// Decrements the durationRemaining of the toDo by the duration argument
