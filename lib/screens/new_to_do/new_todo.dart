@@ -175,12 +175,15 @@ class _NewTodoState extends State<NewTodo> {
       // If on the isRecurring? page, go back to the page to enter the task
     } else if (!recurringEntered) {
       setState(() {
+        isRecurring = null;
         taskEntered = false;
       });
       // If on the recurWindow? page, go back to the isRecurring? page
     } else if (isRecurring && !recurWindowEntered) {
       setState(() {
         recurringEntered = false;
+        recurWindow = null;
+        recurTimes = null;
       });
       // If on the dueDate? page
     } else if (!dueDateEntered) {
@@ -202,11 +205,13 @@ class _NewTodoState extends State<NewTodo> {
       // if on the timeBased? page, go to the dueDate? page
     } else if (!timeBasedEntered) {
       setState(() {
+        timeBased = null;
         dueDateEntered = false;
       });
       // otherwise go to the timeBased? page
     } else {
       setState(() {
+        timeBased = null;
         timeBasedEntered = false;
       });
     }
@@ -222,7 +227,8 @@ class _NewTodoState extends State<NewTodo> {
         });
       }
 
-      return EnterTask(complete, setTask, setImportance);
+      return EnterTask(
+          complete, getTask, setTask, getImportance, setImportance);
     } else if (!recurringEntered) {
       void complete() {
         setState(() {

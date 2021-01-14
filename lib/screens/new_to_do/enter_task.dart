@@ -4,10 +4,13 @@ import 'package:retask/constants.dart';
 class EnterTask extends StatefulWidget {
   // Functions inherited from the parent widget
   final Function complete;
+  final Function getTask;
   final Function setTask;
+  final Function getImportance;
   final Function setImportance;
 
-  EnterTask(this.complete, this.setTask, this.setImportance);
+  EnterTask(this.complete, this.getTask, this.setTask, this.getImportance,
+      this.setImportance);
 
   @override
   _EnterTaskState createState() => _EnterTaskState();
@@ -15,14 +18,16 @@ class EnterTask extends StatefulWidget {
 
 class _EnterTaskState extends State<EnterTask> {
   /// String representing the task being entered (associated with the TextFormField)
-  String task = "";
+  String task;
 
   /// Int representing the importance of the task (associated with the Slider)
-  int importance = 0;
+  int importance;
 
   @override
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
+    task = task ?? widget.getTask() ?? "";
+    importance = importance ?? widget.getImportance() ?? 0;
 
     return Column(
       children: [
