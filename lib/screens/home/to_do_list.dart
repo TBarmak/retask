@@ -105,7 +105,9 @@ class _ToDoListState extends State<ToDoList> {
     }
 
     // Move completed tasks to the bottom of the list
-    toDos.sort(sortCompleted);
+    if (toDos != null) {
+      toDos.sort(sortCompleted);
+    }
 
     /// Build a Card from a ToDo instance
     Card buildTile(context, index) {
