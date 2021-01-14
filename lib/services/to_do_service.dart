@@ -1,3 +1,4 @@
+import 'package:retask/constants.dart';
 import 'package:retask/models/to_do.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -106,6 +107,29 @@ class ToDoService {
     }
     toDosCollection.doc(toDo.id).update(
         {"durationRemaining": (toDo.durationRemaining - duration).inSeconds});
+  }
+
+  /// Update recurring ToDos if the dueDate passed
+  void recur(ToDo toDo) {
+    DateTime dueDate = toDo.dueDate;
+    DateTime now = DateTime.now();
+    // Ignore minutes and seconds, just see if the dueDate has passed
+    // To recur, the ToDo must have a due date, the due date must have passed, and the ToDo must be recurring
+    if (toDo.dueDate != null &&
+        DateTime(now.year, now.month, now.day)
+                .compareTo(DateTime(dueDate.year, dueDate.month, dueDate.day)) >
+            0 &&
+        toDo.recurTimes != 0) {
+      // Update the due date
+      toDo.dueDate = nextDueDateFromRecurWindow[toDo.recurWindow](toDo.dueDate);
+      toDo.completed = false;
+      toDo.durationRemaining = toDo.duration;
+      toDo.timesRemaining = toDo.numTimes;
+      if (toDo.recurTimes != -1) {
+        toDo.recurTimes = toDo.recurTimes - 1;
+      }
+      updateToDo(toDo);
+    }
   }
 
   /// Convert a duration to the form "x hr(s) y min", concise arg makes the output shorter when set to true

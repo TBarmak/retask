@@ -86,6 +86,13 @@ class _ToDoListState extends State<ToDoList> {
   Widget build(BuildContext context) {
     final toDos = Provider.of<List<ToDo>>(context);
 
+    // Check if the due dates of recurring ToDos have passed
+    if (toDos != null) {
+      for (var toDo in toDos) {
+        toDoService.recur(toDo);
+      }
+    }
+
     /// Put completed tasks at the bottom, and sort alphabetically by task
     int sortCompleted(a, b) {
       if (a.completed && !b.completed) {
