@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:retask/constants.dart';
+import 'package:retask/shared/constants.dart';
 import 'package:retask/models/to_do.dart';
 import 'package:intl/intl.dart';
 import 'package:retask/screens/home/complete_to_do/complete_to_do_form.dart';

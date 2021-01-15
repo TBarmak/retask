@@ -1,4 +1,4 @@
-import 'package:retask/constants.dart';
+import 'package:retask/shared/constants.dart';
 import 'package:retask/models/to_do.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 

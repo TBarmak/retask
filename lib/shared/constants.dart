@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 /// A list for coloring the ToDo tiles according to their importance
 final List<Color> importanceColors = [Colors.green, Colors.yellow, Colors.red];
 
+/// A list of phrases associated with each level of importance
+List<String> importanceWords = ["procrastinate?", "meh", "just DO IT!"];
+
 /// Options for the period over which the toDo recurs
 List<String> recurWindowOptions = [
   'none',

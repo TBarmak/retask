@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:retask/constants.dart';
+import 'package:retask/shared/constants.dart';
 
 class EnterTask extends StatefulWidget {
   // Functions inherited from the parent widget
@@ -47,7 +47,7 @@ class _EnterTaskState extends State<EnterTask> {
                   return null;
                 },
                 decoration: InputDecoration(
-                  hintText: "Task",
+                  hintText: "What would you like to do?",
                   hintStyle: TextStyle(color: Colors.lightBlue[100]),
                   enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.white, width: 2.0)),
@@ -59,22 +59,40 @@ class _EnterTaskState extends State<EnterTask> {
         ),
         SizedBox(height: 40),
         Text("Importance:",
-            style: TextStyle(color: Colors.white, fontSize: 20)),
+            style: TextStyle(color: Colors.white, fontSize: 30)),
         SizedBox(height: 20),
-        Container(
-          margin: EdgeInsets.symmetric(horizontal: 40),
-          child: Slider(
-              activeColor: importanceColors[importance],
-              inactiveColor: Colors.white,
-              value: importance.toDouble(),
-              min: 0,
-              max: 2,
-              divisions: 2,
-              onChanged: (val) {
-                setState(() {
-                  importance = val.toInt();
-                });
-              }),
+        Column(
+          children: [
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 40),
+              child: Slider(
+                  activeColor: importanceColors[importance],
+                  inactiveColor: Colors.white,
+                  value: importance.toDouble(),
+                  min: 0,
+                  max: 2,
+                  divisions: 2,
+                  onChanged: (val) {
+                    setState(() {
+                      importance = val.toInt();
+                    });
+                  }),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                mainAxisAlignment: [
+                  MainAxisAlignment.start,
+                  MainAxisAlignment.center,
+                  MainAxisAlignment.end
+                ][importance],
+                children: [
+                  Text("${importanceWords[importance]}",
+                      style: TextStyle(fontSize: 15, color: Colors.white)),
+                ],
+              ),
+            ),
+          ],
         ),
         SizedBox(height: 40),
         RaisedButton(

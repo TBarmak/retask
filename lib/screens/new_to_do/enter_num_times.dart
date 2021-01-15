@@ -7,9 +7,10 @@ class EnterNumTimes extends StatelessWidget {
   final Function getRecurWindow;
   final Function getNumTimes;
   final Function setNumTimes;
+  final Function getTask;
 
-  EnterNumTimes(
-      this.complete, this.getRecurWindow, this.getNumTimes, this.setNumTimes);
+  EnterNumTimes(this.complete, this.getRecurWindow, this.getNumTimes,
+      this.setNumTimes, this.getTask);
 
   @override
   Widget build(BuildContext context) {
@@ -25,14 +26,40 @@ class EnterNumTimes extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.all(20),
-          // Include the recur window in the message, if there is one
-          child: Text(
-              "How many times" +
-                  (getRecurWindow() == null
-                      ? " "
-                      : " per " + frequencyToPeriod[getRecurWindow()] + " ") +
-                  "will you do this task?",
-              style: TextStyle(color: Colors.white, fontSize: 20)),
+          child: Column(
+            children: [
+              // Include the recur window in the message, if there is one
+              Text(
+                  "How many times" +
+                      (getRecurWindow() == null
+                          ? " "
+                          : " per " +
+                              frequencyToPeriod[getRecurWindow()] +
+                              " ") +
+                      "will you " +
+                      getTask() +
+                      "?",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.white, fontSize: 50)),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("For example, read ",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white, fontSize: 20)),
+                  Text("5",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          decoration: TextDecoration.underline)),
+                  Text(" books.",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white, fontSize: 20)),
+                ],
+              ),
+            ],
+          ),
         ),
         NumberPicker.integer(
           onChanged: (val) {

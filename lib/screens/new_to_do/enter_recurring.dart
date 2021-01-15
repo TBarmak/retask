@@ -12,8 +12,27 @@ class EnterRecurring extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text("Is this task recurring?",
-            style: TextStyle(color: Colors.white, fontSize: 30)),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Text("Is this task recurring?",
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white, fontSize: 50)),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("For example, read ",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                )),
+            Text("every week.",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    decoration: TextDecoration.underline)),
+          ],
+        ),
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           Container(
               margin: EdgeInsets.all(5),

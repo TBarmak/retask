@@ -36,6 +36,9 @@ class EnterRecurWindow extends StatelessWidget {
                 }
                 return null;
               },
+              decoration: InputDecoration(
+                  enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white))),
               dropdownColor: Colors.blue,
               iconEnabledColor: Colors.white,
               iconDisabledColor: Colors.white,

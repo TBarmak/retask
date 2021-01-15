@@ -10,16 +10,21 @@ class EnterDuration extends StatelessWidget {
   final Function setMinutes;
   final Function getError;
   final Function setError;
+  final Function getTask;
 
   EnterDuration(this.complete, this.getHours, this.setHours, this.getMinutes,
-      this.setMinutes, this.getError, this.setError);
+      this.setMinutes, this.getError, this.setError, this.getTask);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text("For how long?",
-            style: TextStyle(color: Colors.white, fontSize: 20)),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Text("How long will you " + getTask() + "?",
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white, fontSize: 50)),
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [

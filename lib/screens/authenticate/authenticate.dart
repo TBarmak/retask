@@ -69,17 +69,37 @@ class _AuthenticateState extends State<Authenticate> {
                         onChanged: (val) {
                           setState(() => email = val);
                         },
+                        decoration: InputDecoration(
+                          hintText: "Email",
+                          hintStyle: TextStyle(color: Colors.lightBlue[100]),
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.blue, width: 2.0)),
+                          focusedBorder: UnderlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.blue, width: 2.0)),
+                        ),
                       ),
                       SizedBox(height: 20),
                       TextFormField(
                         controller: _passwordController,
                         validator: (val) => val.length < 6
-                            ? 'Enter a password 6+ chars long'
+                            ? 'Enter a password 6+ characters long'
                             : null,
                         obscureText: true,
                         onChanged: (val) {
                           setState(() => password = val);
                         },
+                        decoration: InputDecoration(
+                          hintText: "Password",
+                          hintStyle: TextStyle(color: Colors.lightBlue[100]),
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.blue, width: 2.0)),
+                          focusedBorder: UnderlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.blue, width: 2.0)),
+                        ),
                       ),
                       SizedBox(height: 20),
                       RaisedButton(

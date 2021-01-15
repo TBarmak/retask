@@ -275,7 +275,8 @@ class _NewTodoState extends State<NewTodo> {
         Navigator.pop(context, {'toDo': result});
       }
 
-      return EnterNumTimes(complete, getRecurWindow, getNumTimes, setNumTimes);
+      return EnterNumTimes(
+          complete, getRecurWindow, getNumTimes, setNumTimes, getTask);
     } else {
       void complete() {
         duration = Duration(hours: hours ?? 1, minutes: minutes ?? 0);
@@ -289,7 +290,7 @@ class _NewTodoState extends State<NewTodo> {
       }
 
       return EnterDuration(complete, getHours, setHours, getMinutes, setMinutes,
-          getError, setError);
+          getError, setError, getTask);
     }
   }
 
