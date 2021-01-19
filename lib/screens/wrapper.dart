@@ -8,6 +8,13 @@ class Wrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<MyUser>(context);
-    return user == null ? Authenticate() : Home();
+    return AnimatedSwitcher(
+      child: user == null ? Authenticate() : Home(),
+      transitionBuilder: (Widget child, Animation<double> animation) =>
+          ScaleTransition(child: child, scale: animation),
+      duration: Duration(milliseconds: 500),
+      switchInCurve: Curves.bounceInOut,
+      switchOutCurve: Curves.easeInExpo,
+    );
   }
 }
