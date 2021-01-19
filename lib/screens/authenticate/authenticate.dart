@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:retask/screens/loading.dart';
-import 'package:retask/services/auth.dart';
+import 'package:retask/screens/authenticate/register.dart';
+import 'package:retask/screens/authenticate/sign_in.dart';
+import 'package:retask/shared/constants.dart';
 
 class Authenticate extends StatefulWidget {
   @override
@@ -8,137 +9,54 @@ class Authenticate extends StatefulWidget {
 }
 
 class _AuthenticateState extends State<Authenticate> {
-  final TextEditingController _emailController = new TextEditingController();
-  final TextEditingController _passwordController = new TextEditingController();
-
-  final AuthService _auth = AuthService();
-  final _formKey = GlobalKey<FormState>();
-
-  String email = '';
-  String password = '';
-  String error = '';
-
   /// Boolean used to show sign-in screen or register screen
   bool signIn = true;
 
-  /// Boolean used to show the loading screen
-  bool loading = false;
-
   @override
   Widget build(BuildContext context) {
-    return loading
-        ? Loading()
-        : Scaffold(
-            backgroundColor: Colors.white,
-            appBar: AppBar(
-              backgroundColor: Colors.blue,
-              elevation: 0.0,
-              title: Text(signIn ? 'Sign In' : 'Sign Up'),
-              actions: [
-                FlatButton.icon(
-                  icon: Icon(
-                    Icons.person,
-                    color: Colors.white,
-                  ),
-                  label: Text(signIn ? 'Register' : 'Sign In',
-                      style: TextStyle(color: Colors.white)),
-                  onPressed: () {
-                    setState(() {
-                      signIn = !signIn;
-                      _emailController.clear();
-                      _passwordController.clear();
-                      error = '';
-                      email = '';
-                      password = '';
-                    });
-                  },
-                )
-              ],
+    return Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: backgroundColor,
+        appBar: AppBar(
+          backgroundColor: backgroundColor,
+          elevation: 0.0,
+          actions: [
+            Container(
+              decoration: BoxDecoration(
+                  color: accentColor1,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      bottomLeft: Radius.circular(20))),
+              child: FlatButton.icon(
+                icon: Icon(Icons.person, color: backgroundColor),
+                label: Text(signIn ? 'Register' : 'Sign In',
+                    style: TextStyle(color: backgroundColor)),
+                onPressed: () {
+                  setState(() {
+                    signIn = !signIn;
+                  });
+                },
+              ),
+            )
+          ],
+        ),
+        body: Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage("assets/check.png"),
+                      fit: BoxFit.fitWidth)),
             ),
-            body: Container(
-              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 50),
-              child: Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      SizedBox(height: 20),
-                      TextFormField(
-                        controller: _emailController,
-                        validator: (val) =>
-                            val.isEmpty ? 'Enter an email' : null,
-                        onChanged: (val) {
-                          setState(() => email = val);
-                        },
-                        decoration: InputDecoration(
-                          hintText: "Email",
-                          hintStyle: TextStyle(color: Colors.lightBlue[100]),
-                          enabledBorder: UnderlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.blue, width: 2.0)),
-                          focusedBorder: UnderlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.blue, width: 2.0)),
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      TextFormField(
-                        controller: _passwordController,
-                        validator: (val) => val.length < 6
-                            ? 'Enter a password 6+ characters long'
-                            : null,
-                        obscureText: true,
-                        onChanged: (val) {
-                          setState(() => password = val);
-                        },
-                        decoration: InputDecoration(
-                          hintText: "Password",
-                          hintStyle: TextStyle(color: Colors.lightBlue[100]),
-                          enabledBorder: UnderlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.blue, width: 2.0)),
-                          focusedBorder: UnderlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.blue, width: 2.0)),
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      RaisedButton(
-                        color: Colors.blue,
-                        child: Text(signIn ? 'Sign in' : 'Register',
-                            style: TextStyle(color: Colors.white)),
-                        onPressed: () async {
-                          if (_formKey.currentState.validate()) {
-                            setState(() => loading = true);
-                            if (signIn) {
-                              dynamic result = await _auth
-                                  .signInWithEmailAndPassword(email, password);
-                              if (result == null) {
-                                setState(() {
-                                  loading = false;
-                                  error =
-                                      'Could not sign in with those credentials';
-                                });
-                              }
-                            } else {
-                              dynamic result =
-                                  await _auth.registerWithEmailAndPassword(
-                                      email, password);
-                              if (result == null) {
-                                setState(() {
-                                  loading = false;
-                                  error = 'Please supply a valid email';
-                                });
-                              }
-                            }
-                          }
-                        },
-                      ),
-                      SizedBox(height: 12),
-                      Text(error,
-                          style: TextStyle(color: Colors.red, fontSize: 14.0))
-                    ],
-                  )),
+            AnimatedSwitcher(
+              child: signIn ? SignIn() : Register(),
+              transitionBuilder: (Widget child, Animation<double> animation) =>
+                  ScaleTransition(child: child, scale: animation),
+              duration: Duration(milliseconds: 500),
+              switchInCurve: Curves.bounceInOut,
+              switchOutCurve: Curves.easeInExpo,
             ),
-          );
+          ],
+        ));
   }
 }

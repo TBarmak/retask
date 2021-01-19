@@ -22,3 +22,28 @@ Map<String, Function> nextDueDateFromRecurWindow = {
   'monthy': (DateTime date) => DateTime(date.year, date.month + 1, date.day),
   'annually': (DateTime date) => DateTime(date.year + 1, date.month, date.day)
 };
+
+// Colors for the theme
+const Color backgroundColor = Color(0xff2c365e);
+const Color backgroundColorTranslucent = Color(0x552c365e);
+const Color accentColor1 = Color(0xff8acdea);
+const Color accentColor2 = Color(0xff66ff00);
+
+/// Decoration for all TextFormFields
+const textInputDecoration = InputDecoration(
+    fillColor: Colors.white,
+    filled: true,
+    hintStyle: TextStyle(color: backgroundColorTranslucent),
+    enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(20)),
+        borderSide: BorderSide(color: Colors.white, width: 2.0)),
+    focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(20)),
+        borderSide: BorderSide(color: accentColor1, width: 2.0)),
+    errorStyle: TextStyle(color: accentColor1),
+    focusedErrorBorder: UnderlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(20)),
+        borderSide: BorderSide(color: accentColor1, width: 2.0)),
+    errorBorder: UnderlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(20)),
+        borderSide: BorderSide(color: accentColor1, width: 2.0)));
