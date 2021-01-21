@@ -15,6 +15,14 @@ List<String> recurWindowOptions = [
   'annually'
 ];
 
+/// Converts time periods from adverb form to noun
+Map frequencyToPeriod = {
+  'daily': 'day',
+  'weekly': 'week',
+  'monthly': 'month',
+  'annually': 'year'
+};
+
 /// Maps the recur window to the function that gets the next due date
 Map<String, Function> nextDueDateFromRecurWindow = {
   'daily': (DateTime date) => DateTime(date.year, date.month, date.day + 1),
@@ -47,3 +55,8 @@ const textInputDecoration = InputDecoration(
     errorBorder: UnderlineInputBorder(
         borderRadius: BorderRadius.all(Radius.circular(20)),
         borderSide: BorderSide(color: accentColor1, width: 2.0)));
+
+/// Shadows for text in widgets for creating a new to-do
+const textShadows = [
+  Shadow(offset: Offset(0, 10), blurRadius: 25, color: Colors.black38)
+];

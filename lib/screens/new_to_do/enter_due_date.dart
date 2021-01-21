@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:retask/shared/constants.dart';
 
 class EnterDueDate extends StatelessWidget {
   // Functions inherited from the parent widget
@@ -14,26 +15,38 @@ class EnterDueDate extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        Spacer(flex: 2),
         // Ask for the first due date if it is recurring, otherwise just ask for the due date
-        Text(
-            "When is the" +
-                (getRecurWindow() == null ? " " : " first ") +
-                "due date?",
-            style: TextStyle(color: Colors.white, fontSize: 30)),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Text(
+              "When is the" +
+                  (getRecurWindow() == null ? " " : " first ") +
+                  "due date?",
+              style: TextStyle(
+                  color: accentColor1, fontSize: 40, shadows: textShadows)),
+        ),
+        Spacer(flex: 1),
         Container(
           margin: EdgeInsets.all(10),
           decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.all(Radius.circular(20))),
-          child: CalendarDatePicker(
-            initialDate: getDueDate() ?? DateTime.now(),
-            firstDate: DateTime.now(),
-            lastDate: DateTime.now().add(Duration(days: 365)),
-            onDateChanged: (val) {
-              setDueDate(val);
-            },
+          child: Theme(
+            data: ThemeData(
+                colorScheme: ColorScheme.light(
+                    primary: accentColor1, onPrimary: backgroundColor)),
+            child: CalendarDatePicker(
+              initialDate: getDueDate() ?? DateTime.now(),
+              firstDate: DateTime.now(),
+              lastDate: DateTime.now().add(Duration(days: 365)),
+              onDateChanged: (val) {
+                setDueDate(val);
+              },
+            ),
           ),
         ),
+        Spacer(flex: 1),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -43,29 +56,39 @@ class EnterDueDate extends StatelessWidget {
                 ? Container(
                     margin: EdgeInsets.symmetric(horizontal: 10),
                     child: RaisedButton(
+                        elevation: 25,
+                        padding:
+                            EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                        color: accentColor1,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
                         onPressed: () {
                           setDueDate(null);
                           complete();
                         },
-                        color: Colors.white,
+                        textColor: backgroundColor,
                         child: Text('No Due Date',
-                            style:
-                                TextStyle(color: Colors.blue, fontSize: 20))),
+                            style: TextStyle(fontSize: 20))),
                   )
                 : Container(),
             Container(
               margin: EdgeInsets.symmetric(horizontal: 10),
               child: RaisedButton(
+                  elevation: 25,
+                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                  color: accentColor1,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
                   onPressed: () {
                     getDueDate() ?? setDueDate(DateTime.now());
                     complete();
                   },
-                  color: Colors.white,
-                  child: Text('Continue',
-                      style: TextStyle(color: Colors.blue, fontSize: 20))),
+                  textColor: backgroundColor,
+                  child: Text('Continue', style: TextStyle(fontSize: 20))),
             ),
           ],
-        )
+        ),
+        Spacer(flex: 2)
       ],
     );
   }

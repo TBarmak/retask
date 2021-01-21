@@ -7,6 +7,7 @@ import 'package:retask/screens/new_to_do/enter_recur_window.dart';
 import 'package:retask/screens/new_to_do/enter_recurring.dart';
 import 'package:retask/screens/new_to_do/enter_task.dart';
 import 'package:retask/screens/new_to_do/enter_time_based.dart';
+import 'package:retask/shared/constants.dart';
 
 class NewTodo extends StatefulWidget {
   @override
@@ -210,6 +211,7 @@ class _NewTodoState extends State<NewTodo> {
       });
       // otherwise go to the timeBased? page
     } else {
+      print("Here");
       setState(() {
         timeBased = null;
         timeBasedEntered = false;
@@ -290,26 +292,38 @@ class _NewTodoState extends State<NewTodo> {
       }
 
       return EnterDuration(complete, getHours, setHours, getMinutes, setMinutes,
-          getError, setError, getTask);
+          getError, setError, getTask, getRecurWindow);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.blue,
-        body: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(children: [
-                IconButton(
-                    icon: Icon(Icons.arrow_back, color: Colors.white),
-                    onPressed: () {
-                      goBack();
-                    })
-              ]),
-              AnimatedSwitcher(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: backgroundColor,
+        body: Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage("assets/check.png"),
+                      fit: BoxFit.fitWidth)),
+            ),
+            SafeArea(
+              child: Column(
+                children: [
+                  Row(children: [
+                    IconButton(
+                        icon: Icon(Icons.arrow_back, color: Colors.white),
+                        onPressed: () {
+                          goBack();
+                        })
+                  ]),
+                ],
+              ),
+            ),
+            SafeArea(
+              child: AnimatedSwitcher(
                 child: getMenuScreen(),
                 transitionBuilder:
                     (Widget child, Animation<double> animation) =>
@@ -318,9 +332,8 @@ class _NewTodoState extends State<NewTodo> {
                 switchInCurve: Curves.easeIn,
                 switchOutCurve: Curves.easeOut,
               ),
-              SizedBox(height: 10)
-            ],
-          ),
+            )
+          ],
         ));
   }
 }

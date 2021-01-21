@@ -31,6 +31,7 @@ class _EnterTaskState extends State<EnterTask> {
 
     return Column(
       children: [
+        Spacer(flex: 3),
         Container(
           margin: EdgeInsets.symmetric(horizontal: 40),
           child: Form(
@@ -46,56 +47,39 @@ class _EnterTaskState extends State<EnterTask> {
                   }
                   return null;
                 },
-                decoration: InputDecoration(
-                  hintText: "What would you like to do?",
-                  hintStyle: TextStyle(color: Colors.lightBlue[100]),
-                  enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white, width: 2.0)),
-                  focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white, width: 2.0)),
-                ),
-                style: TextStyle(color: Colors.white)),
+                decoration: textInputDecoration.copyWith(
+                    hintText: "What would you like to do?"),
+                style: TextStyle(color: backgroundColor)),
           ),
         ),
-        SizedBox(height: 40),
-        Text("Importance:",
-            style: TextStyle(color: Colors.white, fontSize: 30)),
-        SizedBox(height: 20),
-        Column(
+        Spacer(flex: 1),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 40),
-              child: Slider(
-                  activeColor: importanceColors[importance],
-                  inactiveColor: Colors.white,
-                  value: importance.toDouble(),
-                  min: 0,
-                  max: 2,
-                  divisions: 2,
-                  onChanged: (val) {
-                    setState(() {
-                      importance = val.toInt();
-                    });
-                  }),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
-                mainAxisAlignment: [
-                  MainAxisAlignment.start,
-                  MainAxisAlignment.center,
-                  MainAxisAlignment.end
-                ][importance],
-                children: [
-                  Text("${importanceWords[importance]}",
-                      style: TextStyle(fontSize: 15, color: Colors.white)),
-                ],
-              ),
-            ),
+            Text("Important?",
+                style: TextStyle(color: Colors.white, fontSize: 30)),
+            Switch(
+              value: importance != 0,
+              activeColor: accentColor1,
+              activeTrackColor: Color.fromARGB((0.6 * 255).toInt(),
+                  accentColor1.red, accentColor1.green, accentColor1.blue),
+              inactiveThumbColor: Colors.white,
+              inactiveTrackColor: Colors.white60,
+              onChanged: (val) {
+                setState(() {
+                  val ? importance = 1 : importance = 0;
+                });
+              },
+            )
           ],
         ),
-        SizedBox(height: 40),
+        Spacer(flex: 8),
         RaisedButton(
+            elevation: 25,
+            padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+            color: accentColor1,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             onPressed: () {
               if (_formKey.currentState.validate()) {
                 widget.setImportance(importance);
@@ -103,9 +87,9 @@ class _EnterTaskState extends State<EnterTask> {
                 widget.complete();
               }
             },
-            color: Colors.white,
             child: Text('Okay',
-                style: TextStyle(color: Colors.blue, fontSize: 20))),
+                style: TextStyle(color: backgroundColor, fontSize: 20))),
+        Spacer(flex: 4),
       ],
     );
   }

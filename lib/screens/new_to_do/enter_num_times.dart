@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:numberpicker/numberpicker.dart';
+import 'package:retask/shared/constants.dart';
+import 'package:retask/shared/shared.dart';
 
 class EnterNumTimes extends StatelessWidget {
   // Functions inherited from the parent widget
@@ -14,82 +16,99 @@ class EnterNumTimes extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /// Converts time periods from adverb form to noun
-    Map frequencyToPeriod = {
-      'daily': 'day',
-      'weekly': 'week',
-      'monthly': 'month',
-      'annually': 'year'
-    };
-
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        Spacer(flex: 2),
+        // Include the recur window in the message, if there is one
         Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: SizedBox(
+            width: screenWidth(context) * 0.8,
+            child: Text(
+                "How many times" +
+                    (getRecurWindow() == null
+                        ? " "
+                        : " per " + frequencyToPeriod[getRecurWindow()] + " ") +
+                    "will you " +
+                    (getTask().length > 15
+                        ? getTask().substring(0, 15) + "..."
+                        : getTask()) +
+                    "?",
+                textAlign: TextAlign.start,
+                style: TextStyle(
+                    color: accentColor1, fontSize: 35, shadows: textShadows)),
+          ),
+        ),
+        Spacer(flex: 1),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Text("For example, read ",
+              textAlign: TextAlign.start,
+              style: TextStyle(
+                  color: accentColor1, fontSize: 20, shadows: textShadows)),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Row(
             children: [
-              // Include the recur window in the message, if there is one
-              Text(
-                  "How many times" +
-                      (getRecurWindow() == null
-                          ? " "
-                          : " per " +
-                              frequencyToPeriod[getRecurWindow()] +
-                              " ") +
-                      "will you " +
-                      getTask() +
-                      "?",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white, fontSize: 50)),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("For example, read ",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white, fontSize: 20)),
-                  Text("5",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          decoration: TextDecoration.underline)),
-                  Text(" books.",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white, fontSize: 20)),
-                ],
-              ),
+              Text("5",
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                      color: accentColor1,
+                      fontSize: 20,
+                      decoration: TextDecoration.underline,
+                      shadows: textShadows)),
+              Text(" books.",
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                      color: accentColor1, fontSize: 20, shadows: textShadows)),
             ],
           ),
         ),
-        NumberPicker.integer(
-          onChanged: (val) {
-            setNumTimes(val);
-          },
-          initialValue: getNumTimes() ?? 1,
-          minValue: 1,
-          maxValue: 500,
-          selectedTextStyle: TextStyle(color: Colors.white, fontSize: 30),
-          textStyle: TextStyle(color: Colors.white, fontSize: 15),
-          decoration: BoxDecoration(
-            border: Border(
-              top: BorderSide(
-                style: BorderStyle.solid,
-                color: Colors.white,
-              ),
-              bottom: BorderSide(
-                style: BorderStyle.solid,
-                color: Colors.white,
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: NumberPicker.integer(
+            onChanged: (val) {
+              setNumTimes(val);
+            },
+            initialValue: getNumTimes() ?? 1,
+            minValue: 1,
+            maxValue: 500,
+            selectedTextStyle: TextStyle(color: Colors.white, fontSize: 30),
+            textStyle: TextStyle(color: Colors.white, fontSize: 15),
+            decoration: BoxDecoration(
+              border: Border(
+                top: BorderSide(
+                  style: BorderStyle.solid,
+                  color: Colors.white,
+                ),
+                bottom: BorderSide(
+                  style: BorderStyle.solid,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),
         ),
-        RaisedButton(
-            onPressed: () {
-              complete();
-            },
-            color: Colors.white,
-            child: Text('Add To-Do',
-                style: TextStyle(color: Colors.blue, fontSize: 20))),
+        Spacer(flex: 4),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            RaisedButton(
+                elevation: 25,
+                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                color: accentColor1,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
+                onPressed: () {
+                  complete();
+                },
+                textColor: backgroundColor,
+                child: Text('Add To-Do', style: TextStyle(fontSize: 20))),
+          ],
+        ),
+        Spacer(flex: 2),
       ],
     );
   }
