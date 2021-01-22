@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:retask/screens/authenticate/register.dart';
 import 'package:retask/screens/authenticate/sign_in.dart';
+import 'package:retask/screens/background.dart';
 import 'package:retask/shared/constants.dart';
 
 class Authenticate extends StatefulWidget {
@@ -42,12 +43,7 @@ class _AuthenticateState extends State<Authenticate> {
         ),
         body: Stack(
           children: [
-            Container(
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage("assets/check.png"),
-                      fit: BoxFit.fitWidth)),
-            ),
+            Background(),
             AnimatedSwitcher(
               child: signIn ? SignIn() : Register(),
               transitionBuilder: (Widget child, Animation<double> animation) =>

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:retask/models/my_user.dart';
 import 'package:retask/models/to_do.dart';
+import 'package:retask/screens/background.dart';
 import 'package:retask/screens/home/to_do_list.dart';
 import 'package:retask/services/to_do_service.dart';
 
@@ -26,12 +27,7 @@ class _ToDosState extends State<ToDos> {
         appBar: AppBar(backgroundColor: backgroundColor, elevation: 0.0),
         body: Stack(
           children: [
-            Container(
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage("assets/check.png"),
-                      fit: BoxFit.fitWidth)),
-            ),
+            Background(),
             ToDoList(),
             Positioned(
               width: screenWidth(context) * 0.14,

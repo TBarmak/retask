@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:retask/services/auth.dart';
+import 'package:retask/screens/background.dart';
 import 'package:retask/shared/constants.dart';
 
 class Home extends StatelessWidget {
@@ -31,12 +32,7 @@ class Home extends StatelessWidget {
         ),
         body: Stack(
           children: [
-            Container(
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage("assets/check.png"),
-                      fit: BoxFit.fitWidth)),
-            ),
+            Background(),
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [

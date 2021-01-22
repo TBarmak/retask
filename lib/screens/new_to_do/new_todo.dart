@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:retask/models/to_do.dart';
+import 'package:retask/screens/background.dart';
 import 'package:retask/screens/new_to_do/enter_due_date.dart';
 import 'package:retask/screens/new_to_do/enter_duration.dart';
 import 'package:retask/screens/new_to_do/enter_num_times.dart';
@@ -303,12 +304,7 @@ class _NewTodoState extends State<NewTodo> {
         backgroundColor: backgroundColor,
         body: Stack(
           children: [
-            Container(
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage("assets/check.png"),
-                      fit: BoxFit.fitWidth)),
-            ),
+            Background(),
             SafeArea(
               child: Column(
                 children: [

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:numberpicker/numberpicker.dart';
+import 'package:retask/screens/background.dart';
 import 'package:retask/shared/constants.dart';
 import 'package:retask/models/to_do.dart';
 import 'package:intl/intl.dart';
@@ -127,12 +128,7 @@ class _EditToDoState extends State<EditToDo> {
       resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
-          Container(
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage("assets/check.png"),
-                    fit: BoxFit.fitWidth)),
-          ),
+          Background(),
           Column(
             children: [
               Spacer(flex: 1),
