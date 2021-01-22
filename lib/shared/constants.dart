@@ -33,7 +33,7 @@ Map<String, Function> nextDueDateFromRecurWindow = {
 
 // Colors for the theme
 const Color backgroundColor = Color(0xff2c365e);
-const Color backgroundColorTranslucent = Color(0x552c365e);
+const Color backgroundColorTranslucent = Color(0x992c365e);
 const Color accentColor1 = Color(0xff8acdea);
 const Color accentColor2 = Color(0xff66ff00);
 

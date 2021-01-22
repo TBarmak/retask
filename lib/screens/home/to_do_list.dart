@@ -20,26 +20,48 @@ class _ToDoListState extends State<ToDoList> {
     showModalBottomSheet(
         context: context,
         builder: (context) {
-          return CompleteToDoForm(toDo);
+          return SingleChildScrollView(
+            child: Container(
+                color: Colors.transparent,
+                child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                            topLeft: const Radius.circular(20.0),
+                            topRight: const Radius.circular(20.0))),
+                    child: Column(
+                      children: [
+                        SizedBox(height: 10),
+                        CompleteToDoForm(toDo),
+                        SizedBox(height: 30),
+                      ],
+                    ))),
+          );
         });
   }
 
   /// Build the leading widget for the ListTile
   dynamic getLeading(ToDo toDo) {
     if (toDo.duration != null) {
-      return SizedBox(
-        width: 50,
+      return Container(
+        decoration:
+            BoxDecoration(shape: BoxShape.circle, color: backgroundColor),
+        width: 60,
+        height: 60,
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Icon(Icons.hourglass_top_outlined, color: Colors.grey[600]),
+          Icon(Icons.hourglass_top_outlined, color: accentColor1),
           Text(
               toDoService.durationToString(toDo.durationRemaining,
                   concise: true),
-              style: TextStyle(color: Colors.grey[600]))
+              style: TextStyle(color: accentColor1))
         ]),
       );
     } else if (toDo.numTimes == 1) {
-      return SizedBox(
-        width: 50,
+      return Container(
+        width: 60,
+        height: 60,
+        decoration:
+            BoxDecoration(shape: BoxShape.circle, color: backgroundColor),
         child: IconButton(
             onPressed: () {
               setState(() {
@@ -50,18 +72,23 @@ class _ToDoListState extends State<ToDoList> {
                 toDo.completed
                     ? Icons.check_box
                     : Icons.check_box_outline_blank,
-                color: Colors.grey[600])),
+                color: accentColor1)),
       );
     } else {
       return Container(
-          width: 50,
-          height: 50,
-          child: Center(
-              child: Text(toDo.timesRemaining.toString(),
-                  style: TextStyle(color: Colors.grey[600], fontSize: 20))),
-          decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(width: 5, color: Colors.grey[600])));
+        decoration:
+            BoxDecoration(shape: BoxShape.circle, color: backgroundColor),
+        width: 60,
+        height: 60,
+        padding: EdgeInsets.all(5),
+        child: Container(
+            child: Center(
+                child: Text(toDo.timesRemaining.toString(),
+                    style: TextStyle(color: accentColor1, fontSize: 20))),
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(width: 5, color: accentColor1))),
+      );
     }
   }
 
@@ -77,7 +104,11 @@ class _ToDoListState extends State<ToDoList> {
       parts.add("by " + DateFormat('M/d').format(toDo.dueDate));
     }
     if (toDo.recurTimes != 0) {
-      parts.add("recurring " + toDo.recurWindow);
+      parts.add("recurring " +
+          toDo.recurWindow +
+          (toDo.recurTimes == -1
+              ? " indefinitely"
+              : " " + toDo.recurTimes.toString() + " times"));
     }
     return parts.join(", ");
   }
@@ -110,43 +141,70 @@ class _ToDoListState extends State<ToDoList> {
     }
 
     /// Build a Card from a ToDo instance
-    Card buildTile(context, index) {
-      return Card(
-        shape: Border(
-            left: BorderSide(
-                color: importanceColors[toDos[index].importance], width: 10)),
-        child: ListTile(
-            onTap: () {
-              _showCompleteTaskPanel(toDos[index]);
-            },
-            leading: getLeading(toDos[index]),
-            title: Text("${toDos[index].task}"),
-            subtitle: Text(getSubtitle(toDos[index])),
-            trailing: PopupMenuButton(
-              onSelected: (func) {
-                setState(() {
-                  func();
-                });
-              },
-              child: Icon(Icons.more_vert),
-              itemBuilder: (context) {
-                return [
-                  PopupMenuItem(
-                      child: Text("Edit"),
-                      value: () async {
-                        dynamic result = await Navigator.pushNamed(
-                            context, '/edit_to_do',
-                            arguments: {"toDo": toDos[index]});
-                        if (result != null) {
-                          toDoService.updateToDo(result["toDo"]);
-                        }
-                      }),
-                  PopupMenuItem(
-                      child: Text("Delete"),
-                      value: () => toDoService.deleteToDo(toDos[index]))
-                ];
-              },
-            )),
+    Widget buildTile(context, index) {
+      return Opacity(
+        opacity: toDos[index].completed ? 0.6 : 1,
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 5),
+          child: Card(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            child: ClipPath(
+              clipper: ShapeBorderClipper(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15))),
+              child: Container(
+                decoration: toDos[index].importance != 0
+                    ? BoxDecoration(
+                        border: Border(
+                            left: BorderSide(color: accentColor1, width: 10)))
+                    : BoxDecoration(
+                        border: Border(
+                            left: BorderSide(color: Colors.white, width: 10))),
+                child: ListTile(
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                    onTap: () {
+                      _showCompleteTaskPanel(toDos[index]);
+                    },
+                    leading: getLeading(toDos[index]),
+                    title: Text("${toDos[index].task}",
+                        style: TextStyle(color: backgroundColor)),
+                    subtitle: Text(getSubtitle(toDos[index]),
+                        style: TextStyle(color: backgroundColorTranslucent)),
+                    trailing: PopupMenuButton(
+                      onSelected: (func) {
+                        setState(() {
+                          func();
+                        });
+                      },
+                      child: Column(
+                        children: [
+                          Icon(Icons.more_vert),
+                        ],
+                      ),
+                      itemBuilder: (context) {
+                        return [
+                          PopupMenuItem(
+                              child: Text("Edit"),
+                              value: () async {
+                                dynamic result = await Navigator.pushNamed(
+                                    context, '/edit_to_do',
+                                    arguments: {"toDo": toDos[index]});
+                                if (result != null) {
+                                  toDoService.updateToDo(result["toDo"]);
+                                }
+                              }),
+                          PopupMenuItem(
+                              child: Text("Delete"),
+                              value: () => toDoService.deleteToDo(toDos[index]))
+                        ];
+                      },
+                    )),
+              ),
+            ),
+          ),
+        ),
       );
     }
 

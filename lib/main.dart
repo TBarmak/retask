@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
     return StreamProvider<MyUser>.value(
       value: AuthService().user,
       child: MaterialApp(
+        theme: ThemeData(canvasColor: Colors.transparent),
         routes: {
           '/': (context) => Wrapper(),
           '/to_dos': (context) => ToDos(),

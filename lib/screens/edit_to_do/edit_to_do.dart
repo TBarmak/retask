@@ -57,12 +57,14 @@ class _EditToDoState extends State<EditToDo> {
     importance = importance ?? toDo.importance;
 
     return Scaffold(
-      appBar: AppBar(backgroundColor: Colors.blue, elevation: 0),
+      appBar: AppBar(backgroundColor: backgroundColor, elevation: 0),
       bottomNavigationBar: BottomAppBar(
+        color: accentColor1,
         child: RaisedButton(
             elevation: 0,
-            color: Colors.white,
-            child: Text("Update", style: TextStyle(color: Colors.blue)),
+            color: accentColor1,
+            textColor: backgroundColor,
+            child: Text("Update", style: TextStyle(fontSize: 20)),
             onPressed: () {
               if (_formKey.currentState.validate()) {
                 toDo.task = task;
@@ -121,79 +123,254 @@ class _EditToDoState extends State<EditToDo> {
               }
             }),
       ),
-      backgroundColor: Colors.blue,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Flexible(flex: 1, fit: FlexFit.tight, child: Container()),
-                      Flexible(
-                          flex: 6,
+      backgroundColor: backgroundColor,
+      resizeToAvoidBottomInset: false,
+      body: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage("assets/check.png"),
+                    fit: BoxFit.fitWidth)),
+          ),
+          Column(
+            children: [
+              Spacer(flex: 1),
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Spacer(flex: 1),
+                        Flexible(
+                            flex: 6,
+                            fit: FlexFit.tight,
+                            child: Container(
+                              alignment: Alignment(-1, 0),
+                              child: Text("Task",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 20)),
+                            )),
+                        Flexible(
+                          flex: 8,
                           fit: FlexFit.tight,
+                          child: TextFormField(
+                              initialValue: task,
+                              onChanged: (val) {
+                                task = val;
+                              },
+                              validator: (value) {
+                                if (value.isEmpty) {
+                                  return 'Please enter a task';
+                                }
+                                return null;
+                              },
+                              decoration: textInputDecoration.copyWith(
+                                  hintText: "What would you like to do?"),
+                              style: TextStyle(
+                                  color: backgroundColor, fontSize: 15)),
+                        ),
+                        Spacer(flex: 1),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Spacer(flex: 1),
+              duration != null
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Flexible(
                           child: Container(
-                            alignment: Alignment(-1, 0),
-                            child: Text("Task",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 20)),
-                          )),
-                      Flexible(
-                        flex: 8,
-                        fit: FlexFit.tight,
-                        child: TextFormField(
-                            initialValue: task,
-                            onChanged: (val) {
-                              task = val;
-                            },
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return 'Please enter a task';
-                              }
-                              return null;
-                            },
-                            decoration: InputDecoration(
-                              hintText: "Task",
-                              hintStyle:
-                                  TextStyle(color: Colors.lightBlue[100]),
-                              enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.white, width: 2.0)),
-                              focusedBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.white, width: 2.0)),
+                            child: NumberPicker.integer(
+                              textMapper: (val) {
+                                return val == "1" ? val + " hr" : val + " hrs";
+                              },
+                              onChanged: (val) {
+                                setState(() {
+                                  hours = val;
+                                });
+                              },
+                              initialValue: hours,
+                              minValue: 0,
+                              maxValue: 100,
+                              selectedTextStyle:
+                                  TextStyle(color: Colors.white, fontSize: 30),
+                              textStyle:
+                                  TextStyle(color: Colors.white, fontSize: 15),
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  top: BorderSide(
+                                    style: BorderStyle.solid,
+                                    color: Colors.white,
+                                  ),
+                                  bottom: BorderSide(
+                                    style: BorderStyle.solid,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
                             ),
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 20)),
-                      ),
-                      Flexible(flex: 1, fit: FlexFit.tight, child: Container())
-                    ],
+                          ),
+                        ),
+                        Flexible(
+                          flex: 1,
+                          child: Container(
+                            alignment: Alignment(-0.8, 0),
+                            child: NumberPicker.integer(
+                              textMapper: (val) {
+                                return val + " min";
+                              },
+                              onChanged: (val) {
+                                setState(() {
+                                  minutes = val;
+                                });
+                              },
+                              initialValue: minutes,
+                              minValue: 0,
+                              maxValue: 100,
+                              selectedTextStyle:
+                                  TextStyle(color: Colors.white, fontSize: 30),
+                              textStyle:
+                                  TextStyle(color: Colors.white, fontSize: 15),
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  top: BorderSide(
+                                    style: BorderStyle.solid,
+                                    color: Colors.white,
+                                  ),
+                                  bottom: BorderSide(
+                                    style: BorderStyle.solid,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Spacer(flex: 1),
+                        Flexible(
+                          flex: 3,
+                          fit: FlexFit.tight,
+                          child: NumberPicker.integer(
+                            textMapper: (val) {
+                              return val == "1"
+                                  ? val + " time"
+                                  : val + " times";
+                            },
+                            onChanged: (val) {
+                              setState(() {
+                                numTimes = val;
+                              });
+                            },
+                            initialValue: numTimes,
+                            minValue: 1,
+                            maxValue: 500,
+                            selectedTextStyle:
+                                TextStyle(color: Colors.white, fontSize: 30),
+                            textStyle:
+                                TextStyle(color: Colors.white, fontSize: 15),
+                            decoration: BoxDecoration(
+                              border: Border(
+                                top: BorderSide(
+                                  style: BorderStyle.solid,
+                                  color: Colors.white,
+                                ),
+                                bottom: BorderSide(
+                                  style: BorderStyle.solid,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Spacer(flex: 1),
+                      ],
+                    ),
+              Spacer(flex: 1),
+              Row(
+                children: [
+                  Spacer(flex: 1),
+                  Flexible(
+                    flex: 6,
+                    fit: FlexFit.tight,
+                    child: Container(
+                      alignment: Alignment(-1, 0),
+                      child: Text("Recurring",
+                          style: TextStyle(color: Colors.white, fontSize: 20)),
+                    ),
                   ),
+                  Flexible(
+                    flex: 8,
+                    fit: FlexFit.tight,
+                    child: DropdownButtonFormField(
+                      decoration: InputDecoration(
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white))),
+                      dropdownColor: accentColor1,
+                      iconEnabledColor: Colors.white,
+                      iconDisabledColor: Colors.white,
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                      onChanged: (val) {
+                        setState(() {
+                          recurWindow = val;
+                          if (recurWindow != "none") {
+                            // Recuring tasks must have due dates
+                            dueDateChanged = true;
+                            dueDate = dueDate ?? DateTime.now();
+                            // Set the default recur times to be indefinite
+                            recurTimes = -1;
+                          }
+                        });
+                      },
+                      value: recurWindow ?? recurWindowOptions[0],
+                      items: recurWindowOptions.map((String option) {
+                        return DropdownMenuItem(
+                            value: option,
+                            child: Row(children: [Text(option)]));
+                      }).toList(),
+                    ),
+                  ),
+                  Spacer(flex: 1),
                 ],
               ),
-            ),
-            duration != null
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Flexible(
-                        child: Container(
-                          alignment: Alignment(0.8, 0),
+              Spacer(flex: 1),
+              (recurWindow ?? "none") == "none"
+                  ? Container()
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Spacer(flex: 1),
+                        Flexible(
+                          flex: 3,
+                          fit: FlexFit.tight,
                           child: NumberPicker.integer(
+                            // 0 will represent "indefinitely" on the NumberPicker
+                            // It will be converted to -1 when creating the ToDo
+                            // 0 recurTimes is not recurring, -1 is indefinitely recurring
                             textMapper: (val) {
-                              return val == "1" ? val + " hr" : val + " hrs";
+                              return val == "0"
+                                  ? "Indefinitely"
+                                  : (val == "1"
+                                      ? val + " time"
+                                      : val + " times");
                             },
                             onChanged: (val) {
                               setState(() {
-                                hours = val;
+                                val == 0 ? recurTimes = -1 : recurTimes = val;
                               });
                             },
-                            initialValue: hours,
+                            // If recurTimes == -1, make the initialValue 0
+                            initialValue: recurTimes < 0 ? 0 : recurTimes,
                             minValue: 0,
-                            maxValue: 100,
+                            maxValue: 500,
                             selectedTextStyle:
                                 TextStyle(color: Colors.white, fontSize: 30),
                             textStyle:
@@ -212,204 +389,40 @@ class _EditToDoState extends State<EditToDo> {
                             ),
                           ),
                         ),
-                      ),
-                      Flexible(
-                        flex: 1,
-                        child: Container(
-                          alignment: Alignment(-0.8, 0),
-                          child: NumberPicker.integer(
-                            textMapper: (val) {
-                              return val + " min";
-                            },
-                            onChanged: (val) {
-                              setState(() {
-                                minutes = val;
-                              });
-                            },
-                            initialValue: minutes,
-                            minValue: 0,
-                            maxValue: 100,
-                            selectedTextStyle:
-                                TextStyle(color: Colors.white, fontSize: 30),
-                            textStyle:
-                                TextStyle(color: Colors.white, fontSize: 15),
-                            decoration: BoxDecoration(
-                              border: Border(
-                                top: BorderSide(
-                                  style: BorderStyle.solid,
-                                  color: Colors.white,
-                                ),
-                                bottom: BorderSide(
-                                  style: BorderStyle.solid,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
-                : Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Flexible(flex: 1, fit: FlexFit.tight, child: Container()),
-                      Flexible(
-                        flex: 3,
-                        fit: FlexFit.tight,
-                        child: NumberPicker.integer(
-                          textMapper: (val) {
-                            return val == "1" ? val + " time" : val + " times";
-                          },
-                          onChanged: (val) {
-                            setState(() {
-                              numTimes = val;
-                            });
-                          },
-                          initialValue: numTimes,
-                          minValue: 1,
-                          maxValue: 500,
-                          selectedTextStyle:
-                              TextStyle(color: Colors.white, fontSize: 30),
-                          textStyle:
-                              TextStyle(color: Colors.white, fontSize: 15),
-                          decoration: BoxDecoration(
-                            border: Border(
-                              top: BorderSide(
-                                style: BorderStyle.solid,
-                                color: Colors.white,
-                              ),
-                              bottom: BorderSide(
-                                style: BorderStyle.solid,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Flexible(flex: 1, fit: FlexFit.tight, child: Container())
-                    ],
+                        Spacer(flex: 1),
+                      ],
+                    ),
+              Spacer(flex: 1),
+              Row(
+                children: [
+                  Spacer(flex: 1),
+                  Flexible(
+                    flex: 6,
+                    fit: FlexFit.tight,
+                    child: Container(
+                      alignment: Alignment(-1, 0),
+                      child: Text(
+                          ((recurWindow ?? "none") == "none" ? "" : "First ") +
+                              "Due Date",
+                          style: TextStyle(color: Colors.white, fontSize: 20)),
+                    ),
                   ),
-            Row(
-              children: [
-                Flexible(flex: 1, fit: FlexFit.tight, child: Container()),
-                Flexible(
-                  flex: 6,
-                  fit: FlexFit.tight,
-                  child: Container(
-                    alignment: Alignment(-1, 0),
-                    child: Text("Recurring",
-                        style: TextStyle(color: Colors.white, fontSize: 20)),
-                  ),
-                ),
-                Flexible(
-                  flex: 8,
-                  fit: FlexFit.tight,
-                  child: DropdownButtonFormField(
-                    decoration: InputDecoration(
-                        enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white))),
-                    dropdownColor: Colors.blue,
-                    iconEnabledColor: Colors.white,
-                    iconDisabledColor: Colors.white,
-                    style: TextStyle(color: Colors.white, fontSize: 20),
-                    onChanged: (val) {
-                      setState(() {
-                        recurWindow = val;
-                        if (recurWindow != "none") {
-                          // Recuring tasks must have due dates
-                          dueDateChanged = true;
-                          dueDate = dueDate ?? DateTime.now();
-                          // Set the default recur times to be indefinite
-                          recurTimes = -1;
-                        }
-                      });
-                    },
-                    value: recurWindow ?? recurWindowOptions[0],
-                    items: recurWindowOptions.map((String option) {
-                      return DropdownMenuItem(
-                          value: option, child: Row(children: [Text(option)]));
-                    }).toList(),
-                  ),
-                ),
-                Flexible(
-                  flex: 1,
-                  fit: FlexFit.tight,
-                  child: Container(),
-                )
-              ],
-            ),
-            (recurWindow ?? "none") == "none"
-                ? Container()
-                : Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Flexible(flex: 1, child: Container()),
-                      Flexible(
-                        flex: 3,
-                        fit: FlexFit.tight,
-                        child: NumberPicker.integer(
-                          // 0 will represent "indefinitely" on the NumberPicker
-                          // It will be converted to -1 when creating the ToDo
-                          // 0 recurTimes is not recurring, -1 is indefinitely recurring
-                          textMapper: (val) {
-                            return val == "0"
-                                ? "Indefinitely"
-                                : (val == "1" ? val + " time" : val + " times");
-                          },
-                          onChanged: (val) {
-                            setState(() {
-                              val == 0 ? recurTimes = -1 : recurTimes = val;
-                            });
-                          },
-                          // If recurTimes == -1, make the initialValue 0
-                          initialValue: recurTimes < 0 ? 0 : recurTimes,
-                          minValue: 0,
-                          maxValue: 500,
-                          selectedTextStyle:
-                              TextStyle(color: Colors.white, fontSize: 30),
-                          textStyle:
-                              TextStyle(color: Colors.white, fontSize: 15),
-                          decoration: BoxDecoration(
-                            border: Border(
-                              top: BorderSide(
-                                style: BorderStyle.solid,
-                                color: Colors.white,
-                              ),
-                              bottom: BorderSide(
-                                style: BorderStyle.solid,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Flexible(flex: 1, child: Container()),
-                    ],
-                  ),
-            Row(
-              children: [
-                Flexible(flex: 1, fit: FlexFit.tight, child: Container()),
-                Flexible(
-                  flex: 6,
-                  fit: FlexFit.tight,
-                  child: Container(
-                    alignment: Alignment(-1, 0),
-                    child: Text(
-                        ((recurWindow ?? "none") == "none" ? "" : "First ") +
-                            "Due Date",
-                        style: TextStyle(color: Colors.white, fontSize: 20)),
-                  ),
-                ),
-                Flexible(
-                  flex: 8,
-                  fit: FlexFit.tight,
-                  child: RaisedButton(
+                  Flexible(
+                    flex: 8,
+                    fit: FlexFit.tight,
+                    child: RaisedButton(
+                      elevation: 25,
+                      padding:
+                          EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                      color: accentColor1,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      textColor: backgroundColor,
                       child: Text(
                           dueDate != null
                               ? "${DateFormat('MMMM dd, yyyy').format(dueDate)}"
                               : "None",
-                          style: TextStyle(color: Colors.blue)),
+                          style: TextStyle(fontSize: 15)),
                       onPressed: () async {
                         _openPopup(context, (newDueDate) {
                           setState(() {
@@ -418,48 +431,51 @@ class _EditToDoState extends State<EditToDo> {
                           });
                         }, (recurWindow ?? "none") != "none");
                       },
-                      color: Colors.white),
-                ),
-                Flexible(flex: 1, fit: FlexFit.tight, child: Container())
-              ],
-            ),
-            Row(
-              children: [
-                Flexible(
-                  flex: 1,
-                  fit: FlexFit.tight,
-                  child: Container(),
-                ),
-                Flexible(
-                  flex: 6,
-                  fit: FlexFit.tight,
-                  child: Container(
-                    alignment: Alignment(-1, 0),
-                    child: Text("Importance",
-                        style: TextStyle(color: Colors.white, fontSize: 20)),
+                    ),
                   ),
-                ),
-                Flexible(
-                  flex: 8,
-                  fit: FlexFit.tight,
-                  child: Slider(
-                      activeColor: importanceColors[importance],
-                      inactiveColor: Colors.white,
-                      value: importance.toDouble(),
-                      min: 0,
-                      max: 2,
-                      divisions: 2,
-                      onChanged: (val) {
-                        setState(() {
-                          importance = val.toInt();
-                        });
-                      }),
-                ),
-                Flexible(flex: 1, fit: FlexFit.tight, child: Container())
-              ],
-            ),
-          ],
-        ),
+                  Spacer(flex: 1),
+                ],
+              ),
+              Spacer(flex: 1),
+              Row(
+                children: [
+                  Spacer(flex: 1),
+                  Flexible(
+                    flex: 6,
+                    fit: FlexFit.tight,
+                    child: Container(
+                      alignment: Alignment(-1, 0),
+                      child: Text("Important?",
+                          style: TextStyle(color: Colors.white, fontSize: 20)),
+                    ),
+                  ),
+                  Flexible(
+                      flex: 8,
+                      child: Center(
+                        child: Switch(
+                          value: importance != 0,
+                          activeColor: accentColor1,
+                          activeTrackColor: Color.fromARGB(
+                              (0.6 * 255).toInt(),
+                              accentColor1.red,
+                              accentColor1.green,
+                              accentColor1.blue),
+                          inactiveThumbColor: Colors.white,
+                          inactiveTrackColor: Colors.white60,
+                          onChanged: (val) {
+                            setState(() {
+                              val ? importance = 1 : importance = 0;
+                            });
+                          },
+                        ),
+                      )),
+                  Spacer(flex: 1),
+                ],
+              ),
+              Spacer(flex: 10),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -473,6 +489,7 @@ _openPopup(context, setDueDate, recurring) {
 
   List<DialogButton> buttons = [
     DialogButton(
+      color: accentColor1,
       onPressed: () {
         dueDate = null;
         setDueDate(dueDate);
@@ -480,10 +497,11 @@ _openPopup(context, setDueDate, recurring) {
       },
       child: Text(
         "No due date",
-        style: TextStyle(color: Colors.white, fontSize: 20),
+        style: TextStyle(color: backgroundColor, fontSize: 20),
       ),
     ),
     DialogButton(
+      color: accentColor1,
       onPressed: () {
         dueDate = dueDate ?? DateTime.now();
         setDueDate(dueDate);
@@ -491,7 +509,7 @@ _openPopup(context, setDueDate, recurring) {
       },
       child: Text(
         "Continue",
-        style: TextStyle(color: Colors.white, fontSize: 20),
+        style: TextStyle(color: backgroundColor, fontSize: 20),
       ),
     ),
   ];
@@ -514,13 +532,19 @@ _openPopup(context, setDueDate, recurring) {
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.all(Radius.circular(20))),
-                    child: CalendarDatePicker(
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime.now(),
-                      lastDate: DateTime.now().add(Duration(days: 365)),
-                      onDateChanged: (val) {
-                        dueDate = val;
-                      },
+                    child: Theme(
+                      data: ThemeData(
+                          colorScheme: ColorScheme.light(
+                              primary: accentColor1,
+                              onPrimary: backgroundColor)),
+                      child: CalendarDatePicker(
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime.now(),
+                        lastDate: DateTime.now().add(Duration(days: 365)),
+                        onDateChanged: (val) {
+                          dueDate = val;
+                        },
+                      ),
                     ),
                   ),
                 ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:retask/models/to_do.dart';
 import 'package:retask/services/to_do_service.dart';
+import 'package:retask/shared/constants.dart';
 
 class DecrementDurationRemaining extends StatefulWidget {
   final ToDo toDo;
@@ -38,13 +39,22 @@ class _DecrementDurationRemainingState
                 padding: const EdgeInsets.all(20),
                 child: Text(
                     "You have already met your duration goal to " +
-                        widget.toDo.task +
+                        (widget.toDo.task.length > 15
+                                ? widget.toDo.task.substring(0, 15) + "..."
+                                : widget.toDo.task)
+                            .toLowerCase() +
                         ".",
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 40)),
+                    style: TextStyle(color: backgroundColor, fontSize: 20)),
               ),
               RaisedButton(
-                  child: Text("Okay"),
+                  textColor: backgroundColor,
+                  elevation: 5,
+                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                  color: accentColor1,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Text("Okay", style: TextStyle(fontSize: 20)),
                   onPressed: () {
                     Navigator.pop(context);
                   })
@@ -57,9 +67,13 @@ class _DecrementDurationRemainingState
                 padding: const EdgeInsets.all(20),
                 child: Text(
                     "How much time did you " +
-                        widget.toDo.task.toLowerCase() +
+                        (widget.toDo.task.length > 15
+                                ? widget.toDo.task.substring(0, 15) + "..."
+                                : widget.toDo.task)
+                            .toLowerCase() +
                         "?",
-                    style: TextStyle(fontSize: 20)),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: backgroundColor, fontSize: 20)),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -77,23 +91,24 @@ class _DecrementDurationRemainingState
                     minValue: 0,
                     maxValue: widget.toDo.durationRemaining.inHours,
                     selectedTextStyle:
-                        TextStyle(color: Colors.black, fontSize: 30),
-                    textStyle: TextStyle(color: Colors.black, fontSize: 15),
+                        TextStyle(color: backgroundColor, fontSize: 30),
+                    textStyle: TextStyle(color: backgroundColor, fontSize: 15),
                     decoration: BoxDecoration(
                       border: Border(
                         top: BorderSide(
                           style: BorderStyle.solid,
-                          color: Colors.black,
+                          color: backgroundColor,
                         ),
                         bottom: BorderSide(
                           style: BorderStyle.solid,
-                          color: Colors.black,
+                          color: backgroundColor,
                         ),
                       ),
                     ),
                   ),
                   SizedBox(width: 20),
-                  Text("hr", style: TextStyle(fontSize: 30)),
+                  Text("hr",
+                      style: TextStyle(color: backgroundColor, fontSize: 30)),
                   SizedBox(width: 20),
                   NumberPicker.integer(
                     onChanged: (val) {
@@ -108,27 +123,34 @@ class _DecrementDurationRemainingState
                         ? maxMinutes
                         : 59,
                     selectedTextStyle:
-                        TextStyle(color: Colors.black, fontSize: 30),
-                    textStyle: TextStyle(color: Colors.black, fontSize: 15),
+                        TextStyle(color: backgroundColor, fontSize: 30),
+                    textStyle: TextStyle(color: backgroundColor, fontSize: 15),
                     decoration: BoxDecoration(
                       border: Border(
                         top: BorderSide(
                           style: BorderStyle.solid,
-                          color: Colors.black,
+                          color: backgroundColor,
                         ),
                         bottom: BorderSide(
                           style: BorderStyle.solid,
-                          color: Colors.black,
+                          color: backgroundColor,
                         ),
                       ),
                     ),
                   ),
                   SizedBox(width: 20),
-                  Text("min", style: TextStyle(fontSize: 30))
+                  Text("min",
+                      style: TextStyle(color: backgroundColor, fontSize: 30))
                 ],
               ),
               RaisedButton(
-                  child: Text('Okay'),
+                  textColor: backgroundColor,
+                  elevation: 5,
+                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                  color: accentColor1,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Text('Okay', style: TextStyle(fontSize: 20)),
                   onPressed: () {
                     toDoService.decrementDurationRemaining(
                         widget.toDo, Duration(hours: hours, minutes: minutes));
