@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:retask/services/auth.dart';
 import 'package:retask/screens/background.dart';
 import 'package:retask/shared/constants.dart';
+import 'package:retask/shared/shared.dart';
 
 class Home extends StatelessWidget {
   final AuthService _auth = AuthService();
@@ -34,15 +35,14 @@ class Home extends StatelessWidget {
           children: [
             Background(),
             Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
+                Spacer(flex: 1),
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 60, vertical: 20),
-                  child: Text("You're looking awfully handsome today",
+                  padding: const EdgeInsets.fromLTRB(20, 0, 80, 0),
+                  child: Text(getWelcomeMessage(),
                       style: TextStyle(
                           color: accentColor1,
-                          fontSize: 40,
+                          fontSize: 35,
                           shadows: [
                             Shadow(
                                 offset: Offset(0, 10),
@@ -50,6 +50,7 @@ class Home extends StatelessWidget {
                                 color: Colors.black38)
                           ])),
                 ),
+                Spacer(flex: 10),
                 RaisedButton(
                     elevation: 25,
                     padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
@@ -60,7 +61,9 @@ class Home extends StatelessWidget {
                       Navigator.pushNamed(context, '/to_dos');
                     },
                     child: Text("My To-Do's",
-                        style: TextStyle(color: backgroundColor, fontSize: 15)))
+                        style:
+                            TextStyle(color: backgroundColor, fontSize: 15))),
+                Spacer(flex: 2),
               ],
             ),
           ],

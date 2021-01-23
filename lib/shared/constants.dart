@@ -60,3 +60,12 @@ const textInputDecoration = InputDecoration(
 const textShadows = [
   Shadow(offset: Offset(0, 10), blurRadius: 25, color: Colors.black38)
 ];
+
+/// Messages presented on the home screen to inspire the user
+const List<String> welcomeMessages = [
+  "You're looking awfully good today.",
+  "Amateurs sit and wait for inspiration, the rest of us just get up and go to work.",
+  "Why do anything unless it is going to be great?",
+  "The way to get started is to quit talking and begin doing.",
+  "The secret of getting ahead is getting started."
+];
