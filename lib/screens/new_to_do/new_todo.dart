@@ -170,7 +170,7 @@ class _NewTodoState extends State<NewTodo> {
   }
 
   /// Controls the functionality of the back button
-  void goBack() {
+  Future<bool> goBack() {
     // If on the first page, pop back to the list of To-Do's
     if (!taskEntered) {
       Navigator.pop(context);
@@ -218,6 +218,7 @@ class _NewTodoState extends State<NewTodo> {
         timeBasedEntered = false;
       });
     }
+    return Future.value(false);
   }
 
   /// gets the appropriate screen to request information about the ToDo from the user
@@ -299,37 +300,40 @@ class _NewTodoState extends State<NewTodo> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: backgroundColor,
-        body: Stack(
-          children: [
-            Background(),
-            SafeArea(
-              child: Column(
-                children: [
-                  Row(children: [
-                    IconButton(
-                        icon: Icon(Icons.arrow_back, color: Colors.white),
-                        onPressed: () {
-                          goBack();
-                        })
-                  ]),
-                ],
+    return WillPopScope(
+      onWillPop: goBack,
+      child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          backgroundColor: backgroundColor,
+          body: Stack(
+            children: [
+              Background(),
+              SafeArea(
+                child: Column(
+                  children: [
+                    Row(children: [
+                      IconButton(
+                          icon: Icon(Icons.arrow_back, color: Colors.white),
+                          onPressed: () {
+                            goBack();
+                          })
+                    ]),
+                  ],
+                ),
               ),
-            ),
-            SafeArea(
-              child: AnimatedSwitcher(
-                child: getMenuScreen(),
-                transitionBuilder:
-                    (Widget child, Animation<double> animation) =>
-                        ScaleTransition(child: child, scale: animation),
-                duration: const Duration(milliseconds: 200),
-                switchInCurve: Curves.easeIn,
-                switchOutCurve: Curves.easeOut,
-              ),
-            )
-          ],
-        ));
+              SafeArea(
+                child: AnimatedSwitcher(
+                  child: getMenuScreen(),
+                  transitionBuilder:
+                      (Widget child, Animation<double> animation) =>
+                          ScaleTransition(child: child, scale: animation),
+                  duration: const Duration(milliseconds: 200),
+                  switchInCurve: Curves.easeIn,
+                  switchOutCurve: Curves.easeOut,
+                ),
+              )
+            ],
+          )),
+    );
   }
 }
