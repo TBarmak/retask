@@ -37,6 +37,7 @@ class _EnterTaskState extends State<EnterTask> {
           child: Form(
             key: _formKey,
             child: TextFormField(
+                maxLength: 60,
                 initialValue: task,
                 onChanged: (val) {
                   task = val;
@@ -44,11 +45,13 @@ class _EnterTaskState extends State<EnterTask> {
                 validator: (value) {
                   if (value.isEmpty) {
                     return 'Please enter a task';
+                  } else if (value.length > 60) {
+                    return 'Too many characters';
                   }
                   return null;
                 },
                 decoration: textInputDecoration.copyWith(
-                    hintText: "What would you like to do?"),
+                    hintText: "What would you like to do?", counterText: ""),
                 style: TextStyle(color: backgroundColor)),
           ),
         ),

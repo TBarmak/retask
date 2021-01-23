@@ -152,6 +152,7 @@ class _EditToDoState extends State<EditToDo> {
                           flex: 8,
                           fit: FlexFit.tight,
                           child: TextFormField(
+                              maxLength: 60,
                               initialValue: task,
                               onChanged: (val) {
                                 task = val;
@@ -159,11 +160,14 @@ class _EditToDoState extends State<EditToDo> {
                               validator: (value) {
                                 if (value.isEmpty) {
                                   return 'Please enter a task';
+                                } else if (value.length > 60) {
+                                  return "Too many characters";
                                 }
                                 return null;
                               },
                               decoration: textInputDecoration.copyWith(
-                                  hintText: "What would you like to do?"),
+                                  hintText: "What would you like to do?",
+                                  counterText: ""),
                               style: TextStyle(
                                   color: backgroundColor, fontSize: 15)),
                         ),
