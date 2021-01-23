@@ -186,7 +186,8 @@ class _ToDoListState extends State<ToDoList> {
                       itemBuilder: (context) {
                         return [
                           PopupMenuItem(
-                              child: Text("Edit"),
+                              child: Text("Edit",
+                                  style: TextStyle(color: backgroundColor)),
                               value: () async {
                                 dynamic result = await Navigator.pushNamed(
                                     context, '/edit_to_do',
@@ -196,7 +197,8 @@ class _ToDoListState extends State<ToDoList> {
                                 }
                               }),
                           PopupMenuItem(
-                              child: Text("Delete"),
+                              child: Text("Delete",
+                                  style: TextStyle(color: backgroundColor)),
                               value: () => toDoService.deleteToDo(toDos[index]))
                         ];
                       },
