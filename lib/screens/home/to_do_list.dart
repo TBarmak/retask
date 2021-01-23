@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:retask/screens/loading.dart';
 import 'package:retask/shared/constants.dart';
 import 'package:retask/models/to_do.dart';
 import 'package:intl/intl.dart';
@@ -210,7 +211,10 @@ class _ToDoListState extends State<ToDoList> {
       );
     }
 
-    return (toDos ?? []).length > 0
+    if (toDos == null) {
+      return Loading();
+    }
+    return toDos.length > 0
         ? ListView.builder(itemCount: toDos.length, itemBuilder: buildTile)
         : NoToDos();
   }
