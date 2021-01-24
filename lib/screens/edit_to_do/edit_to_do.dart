@@ -524,7 +524,7 @@ _openPopup(context, setDueDate, recurring) {
       },
       child: Text(
         "No due date",
-        style: TextStyle(color: backgroundColor, fontSize: 20),
+        style: TextStyle(color: backgroundColor, fontSize: 15),
       ),
     ),
     DialogButton(
@@ -536,7 +536,7 @@ _openPopup(context, setDueDate, recurring) {
       },
       child: Text(
         "Continue",
-        style: TextStyle(color: backgroundColor, fontSize: 20),
+        style: TextStyle(color: backgroundColor, fontSize: 15),
       ),
     ),
   ];

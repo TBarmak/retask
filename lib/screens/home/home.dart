@@ -62,7 +62,7 @@ class Home extends StatelessWidget {
                     },
                     child: Text("My To-Do's",
                         style:
-                            TextStyle(color: backgroundColor, fontSize: 15))),
+                            TextStyle(color: backgroundColor, fontSize: 20))),
                 Spacer(flex: 2),
               ],
             ),
