@@ -32,6 +32,8 @@ class _EditToDoState extends State<EditToDo> {
 
   int importance;
 
+  String error = "";
+
   @override
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
@@ -68,26 +70,35 @@ class _EditToDoState extends State<EditToDo> {
             child: Text("Update", style: TextStyle(fontSize: 20)),
             onPressed: () {
               if (_formKey.currentState.validate()) {
+                setState(() {
+                  error = "";
+                });
                 toDo.task = task;
                 // If the task is duration-based
                 if (duration != null) {
-                  duration = Duration(minutes: hours * 60 + minutes);
-                  // If the new duration is shorter than the original, reduce durationRemaining accordingly.
-                  if (duration.compareTo(toDo.duration) < 0) {
-                    toDo.durationRemaining =
-                        toDo.durationRemaining - (toDo.duration - duration);
-                    toDo.durationRemaining =
-                        toDo.durationRemaining < Duration(minutes: 0)
-                            ? Duration(minutes: 0)
-                            : toDo.durationRemaining;
-                    // If the new duration is longer (or equal to) the original, increase durationRemaining accordingly.
+                  if (hours != 0 || minutes != 0) {
+                    duration = Duration(minutes: hours * 60 + minutes);
+                    // If the new duration is shorter than the original, reduce durationRemaining accordingly.
+                    if (duration.compareTo(toDo.duration) < 0) {
+                      toDo.durationRemaining =
+                          toDo.durationRemaining - (toDo.duration - duration);
+                      toDo.durationRemaining =
+                          toDo.durationRemaining < Duration(minutes: 0)
+                              ? Duration(minutes: 0)
+                              : toDo.durationRemaining;
+                      // If the new duration is longer (or equal to) the original, increase durationRemaining accordingly.
+                    } else {
+                      toDo.durationRemaining =
+                          toDo.durationRemaining + (duration - toDo.duration);
+                    }
+                    toDo.completed =
+                        toDo.durationRemaining == Duration(minutes: 0);
+                    toDo.duration = duration;
                   } else {
-                    toDo.durationRemaining =
-                        toDo.durationRemaining + (duration - toDo.duration);
+                    setState(() {
+                      error = "Duration must be non-zero.";
+                    });
                   }
-                  toDo.completed =
-                      toDo.durationRemaining == Duration(minutes: 0);
-                  toDo.duration = duration;
                 }
                 // If the task is not duration-based
                 else {
@@ -119,8 +130,9 @@ class _EditToDoState extends State<EditToDo> {
                 toDo.dueDate = dueDate;
 
                 toDo.importance = importance;
-
-                Navigator.pop(context, {"toDo": toDo});
+                if (error == "") {
+                  Navigator.pop(context, {"toDo": toDo});
+                }
               }
             }),
       ),
@@ -473,6 +485,21 @@ class _EditToDoState extends State<EditToDo> {
                 ],
               ),
               Spacer(flex: 10),
+              Row(
+                children: [
+                  Spacer(flex: 1),
+                  Flexible(
+                      flex: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 30),
+                        child: Text(error,
+                            textAlign: TextAlign.end,
+                            style:
+                                TextStyle(color: accentColor1, fontSize: 20)),
+                      )),
+                ],
+              ),
+              Spacer(flex: 3),
             ],
           ),
         ],
