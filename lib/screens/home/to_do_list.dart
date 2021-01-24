@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:retask/screens/home/celebration.dart';
 import 'package:retask/screens/loading.dart';
 import 'package:retask/shared/constants.dart';
 import 'package:retask/models/to_do.dart';
@@ -15,6 +16,15 @@ class ToDoList extends StatefulWidget {
 
 class _ToDoListState extends State<ToDoList> {
   ToDoService toDoService = ToDoService();
+
+  /// Used to indicate if the celebration screen should be shown
+  bool celebrate = false;
+
+  void setCelebrate(bool celebrate) {
+    setState(() {
+      this.celebrate = celebrate;
+    });
+  }
 
   /// Show pop up menu where the user can complete the task
   void _showCompleteTaskPanel(ToDo toDo) {
@@ -33,7 +43,7 @@ class _ToDoListState extends State<ToDoList> {
                     child: Column(
                       children: [
                         SizedBox(height: 10),
-                        CompleteToDoForm(toDo),
+                        CompleteToDoForm(toDo, setCelebrate),
                         SizedBox(height: 30),
                       ],
                     ))),
@@ -66,6 +76,9 @@ class _ToDoListState extends State<ToDoList> {
         child: IconButton(
             onPressed: () {
               setState(() {
+                if (!toDo.completed) {
+                  celebrate = true;
+                }
                 toDoService.toggleCompleted(toDo);
               });
             },
@@ -215,7 +228,14 @@ class _ToDoListState extends State<ToDoList> {
       return Loading();
     }
     return toDos.length > 0
-        ? ListView.builder(itemCount: toDos.length, itemBuilder: buildTile)
+        ? Stack(
+            children: [
+              ListView.builder(itemCount: toDos.length, itemBuilder: buildTile),
+              celebrate
+                  ? Celebration(setCelebrate)
+                  : Container(width: 0, height: 0)
+            ],
+          )
         : NoToDos();
   }
 }

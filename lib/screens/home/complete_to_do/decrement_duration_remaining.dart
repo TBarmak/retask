@@ -6,8 +6,9 @@ import 'package:retask/shared/constants.dart';
 
 class DecrementDurationRemaining extends StatefulWidget {
   final ToDo toDo;
+  final Function setCelebrate;
 
-  DecrementDurationRemaining(this.toDo);
+  DecrementDurationRemaining(this.toDo, this.setCelebrate);
 
   @override
   _DecrementDurationRemainingState createState() =>
@@ -152,8 +153,9 @@ class _DecrementDurationRemainingState
                       borderRadius: BorderRadius.circular(20)),
                   child: Text('Okay', style: TextStyle(fontSize: 20)),
                   onPressed: () {
-                    toDoService.decrementDurationRemaining(
+                    bool result = toDoService.decrementDurationRemaining(
                         widget.toDo, Duration(hours: hours, minutes: minutes));
+                    widget.setCelebrate(result);
                     Navigator.pop(context);
                   })
             ],

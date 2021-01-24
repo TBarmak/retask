@@ -5,8 +5,9 @@ import 'package:retask/shared/constants.dart';
 
 class CompleteOneTime extends StatelessWidget {
   final ToDo toDo;
+  final Function setCelebrate;
 
-  CompleteOneTime(this.toDo);
+  CompleteOneTime(this.toDo, this.setCelebrate);
   @override
   Widget build(BuildContext context) {
     ToDoService toDoService = ToDoService();
@@ -33,6 +34,7 @@ class CompleteOneTime extends StatelessWidget {
                   child: Text("Yes", style: TextStyle(fontSize: 20)),
                   onPressed: () {
                     if (!toDo.completed) {
+                      setCelebrate(true);
                       toDoService.toggleCompleted(toDo);
                     }
                     Navigator.pop(context);

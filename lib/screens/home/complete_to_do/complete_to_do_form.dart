@@ -6,8 +6,9 @@ import 'package:retask/screens/home/complete_to_do/decrement_times_remaining.dar
 
 class CompleteToDoForm extends StatefulWidget {
   final ToDo toDo;
+  final Function setCelebrate;
 
-  CompleteToDoForm(this.toDo);
+  CompleteToDoForm(this.toDo, this.setCelebrate);
 
   @override
   _CompleteToDoFormState createState() => _CompleteToDoFormState();
@@ -17,10 +18,10 @@ class _CompleteToDoFormState extends State<CompleteToDoForm> {
   @override
   Widget build(BuildContext context) {
     if (widget.toDo.duration != null) {
-      return DecrementDurationRemaining(widget.toDo);
+      return DecrementDurationRemaining(widget.toDo, widget.setCelebrate);
     } else if (widget.toDo.numTimes == 1) {
-      return CompleteOneTime(widget.toDo);
+      return CompleteOneTime(widget.toDo, widget.setCelebrate);
     }
-    return DecrementTimesRemaining(widget.toDo);
+    return DecrementTimesRemaining(widget.toDo, widget.setCelebrate);
   }
 }

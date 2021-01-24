@@ -90,23 +90,32 @@ class ToDoService {
     toDosCollection.doc(toDo.id).update(toDoToMap(toDo));
   }
 
-  /// Decrement the timesRemaining attribute of a ToDo instance in the Firestore Database. If timesRemaining was 1, the task is completed.
-  void decrementTimesRemaining(ToDo toDo, int times) {
+  /// Decrement the timesRemaining attribute of a ToDo instance in the Firestore Database.
+  /// If timesRemaining was 1, the task is completed.
+  /// Returns true if the task was completed, false otherwise
+  bool decrementTimesRemaining(ToDo toDo, int times) {
+    bool completed = false;
     if (toDo.timesRemaining - times == 0 && !toDo.completed) {
       toggleCompleted(toDo);
+      completed = true;
     }
     toDosCollection
         .doc(toDo.id)
         .update({"timesRemaining": toDo.timesRemaining - times});
+    return completed;
   }
 
   /// Decrements the durationRemaining of the toDo by the duration argument
-  void decrementDurationRemaining(ToDo toDo, Duration duration) {
+  /// /// Returns true if the task was completed, false otherwise
+  bool decrementDurationRemaining(ToDo toDo, Duration duration) {
+    bool completed = false;
     if ((toDo.durationRemaining - duration).inSeconds == 0 && !toDo.completed) {
       toggleCompleted(toDo);
+      completed = true;
     }
     toDosCollection.doc(toDo.id).update(
         {"durationRemaining": (toDo.durationRemaining - duration).inSeconds});
+    return completed;
   }
 
   /// Update recurring ToDos if the dueDate passed
