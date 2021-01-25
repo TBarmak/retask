@@ -24,6 +24,7 @@ class MyApp extends StatelessWidget {
     return StreamProvider<MyUser>.value(
       value: AuthService().user,
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         theme:
             ThemeData(canvasColor: Colors.transparent, fontFamily: 'MavenPro'),
         routes: {
