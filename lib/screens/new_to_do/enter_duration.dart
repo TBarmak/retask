@@ -61,7 +61,7 @@ class EnterDuration extends StatelessWidget {
                 initialValue: getHours() ?? 1,
                 minValue: 0,
                 maxValue: 100,
-                selectedTextStyle: TextStyle(color: Colors.white, fontSize: 30),
+                selectedTextStyle: TextStyle(color: Colors.white, fontSize: 25),
                 textStyle: TextStyle(color: Colors.white, fontSize: 15),
                 decoration: BoxDecoration(
                   border: Border(
@@ -87,7 +87,7 @@ class EnterDuration extends StatelessWidget {
                 initialValue: getMinutes() ?? 0,
                 minValue: 0,
                 maxValue: 59,
-                selectedTextStyle: TextStyle(color: Colors.white, fontSize: 30),
+                selectedTextStyle: TextStyle(color: Colors.white, fontSize: 25),
                 textStyle: TextStyle(color: Colors.white, fontSize: 15),
                 decoration: BoxDecoration(
                   border: Border(

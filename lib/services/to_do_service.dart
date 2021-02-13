@@ -118,6 +118,15 @@ class ToDoService {
     return completed;
   }
 
+  /// Update all recurring to-dos
+  void recurToDos() {
+    toDosCollection.snapshots().map(_toDoListFromSnapshot).listen((toDos) {
+      for (var toDo in toDos) {
+        recur(toDo);
+      }
+    });
+  }
+
   /// Update recurring ToDos if the dueDate passed
   void recur(ToDo toDo) {
     DateTime dueDate = toDo.dueDate;
@@ -130,13 +139,18 @@ class ToDoService {
             0 &&
         toDo.recurTimes != 0) {
       // Update the due date
-      toDo.dueDate = nextDueDateFromRecurWindow[toDo.recurWindow](toDo.dueDate);
+      while (DateTime(toDo.dueDate.year, toDo.dueDate.month, toDo.dueDate.day)
+              .compareTo(DateTime(now.year, now.month, now.day)) <
+          0) {
+        toDo.dueDate =
+            nextDueDateFromRecurWindow[toDo.recurWindow](toDo.dueDate);
+        if (!(toDo.recurTimes == -1 || toDo.recurTimes == 0)) {
+          toDo.recurTimes = toDo.recurTimes - 1;
+        }
+      }
       toDo.completed = false;
       toDo.durationRemaining = toDo.duration;
       toDo.timesRemaining = toDo.numTimes;
-      if (toDo.recurTimes != -1) {
-        toDo.recurTimes = toDo.recurTimes - 1;
-      }
       updateToDo(toDo);
     }
   }

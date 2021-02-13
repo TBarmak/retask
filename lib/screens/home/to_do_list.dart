@@ -55,16 +55,16 @@ class _ToDoListState extends State<ToDoList> {
   dynamic getLeading(ToDo toDo) {
     if (toDo.duration != null) {
       return Container(
-        decoration:
-            BoxDecoration(shape: BoxShape.circle, color: backgroundColor),
         width: 60,
         height: 60,
+        decoration:
+            BoxDecoration(shape: BoxShape.circle, color: backgroundColor),
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           Icon(Icons.hourglass_top_outlined, color: accentColor1),
           Text(
               toDoService.durationToString(toDo.durationRemaining,
                   concise: true),
-              style: TextStyle(color: accentColor1))
+              style: TextStyle(color: accentColor1, fontSize: 10))
         ]),
       );
     } else if (toDo.numTimes == 1) {
@@ -131,12 +131,7 @@ class _ToDoListState extends State<ToDoList> {
   Widget build(BuildContext context) {
     final toDos = Provider.of<List<ToDo>>(context);
 
-    // Check if the due dates of recurring ToDos have passed
-    if (toDos != null) {
-      for (var toDo in toDos) {
-        toDoService.recur(toDo);
-      }
-    }
+    toDoService.recurToDos();
 
     /// Put completed tasks at the bottom, and sort alphabetically by task
     int sortCompleted(a, b) {
