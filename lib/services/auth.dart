@@ -49,4 +49,14 @@ class AuthService {
       return null;
     }
   }
+
+  /// Send a password reset email
+  Future sendPasswordResetEmail(String email) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+      return Future.value(true);
+    } catch (e) {
+      return null;
+    }
+  }
 }

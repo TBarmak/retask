@@ -2,24 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:retask/screens/loading.dart';
 import 'package:retask/services/auth.dart';
 import 'package:retask/shared/constants.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
-class SignIn extends StatefulWidget {
+class ResetPassword extends StatefulWidget {
   final Function toggleReset;
 
-  SignIn(this.toggleReset);
+  ResetPassword(this.toggleReset);
   @override
-  _SignInState createState() => _SignInState();
+  _ResetPasswordState createState() => _ResetPasswordState();
 }
 
-class _SignInState extends State<SignIn> {
+class _ResetPasswordState extends State<ResetPassword> {
   final TextEditingController _emailController = new TextEditingController();
-  final TextEditingController _passwordController = new TextEditingController();
 
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
 
+  /// String used to store the text in the email TextFormField
   String email = '';
-  String password = '';
+
+  /// String used to show error messages
   String error = '';
 
   /// Boolean used to show the loading screen
@@ -56,43 +58,14 @@ class _SignInState extends State<SignIn> {
                       ]),
                     ),
                     SizedBox(height: 20),
-                    Container(
-                      child: TextFormField(
-                        style: TextStyle(color: backgroundColor),
-                        controller: _passwordController,
-                        validator: (val) =>
-                            val.length < 6 ? 'Enter your password' : null,
-                        obscureText: true,
-                        onChanged: (val) {
-                          setState(() => password = val);
-                        },
-                        decoration:
-                            textInputDecoration.copyWith(hintText: 'Password'),
-                      ),
-                      decoration: BoxDecoration(boxShadow: [
-                        BoxShadow(
-                            color: Colors.black38,
-                            blurRadius: 25,
-                            offset: Offset(0, 10))
-                      ]),
-                    ),
-                    SizedBox(height: 20),
-                    FlatButton(
-                      onPressed: () {
-                        widget.toggleReset();
-                      },
-                      child: Text("Forgot password",
-                          style: TextStyle(
-                              color: accentColor1,
-                              decoration: TextDecoration.underline)),
-                    ),
                     SizedBox(
                       width: 200,
                       child: Text(error,
+                          textAlign: TextAlign.center,
                           style:
                               TextStyle(color: accentColor1, fontSize: 14.0)),
                     ),
-                    SizedBox(height: 12),
+                    SizedBox(height: 40),
                     RaisedButton(
                       elevation: 25,
                       padding:
@@ -100,19 +73,23 @@ class _SignInState extends State<SignIn> {
                       color: accentColor1,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20)),
-                      child: Text('Sign in',
+                      child: Text('Reset password',
                           style:
                               TextStyle(color: backgroundColor, fontSize: 15)),
                       onPressed: () async {
                         if (_formKey.currentState.validate()) {
                           setState(() => loading = true);
-                          dynamic result = await _auth
-                              .signInWithEmailAndPassword(email, password);
+                          dynamic result =
+                              await _auth.sendPasswordResetEmail(email);
                           if (result == null) {
                             setState(() {
                               loading = false;
-                              error =
-                                  'Could not sign in with those credentials.';
+                              error = 'Account not found.';
+                            });
+                          } else {
+                            _openPopup(context);
+                            setState(() {
+                              loading = false;
                             });
                           }
                         }
@@ -121,5 +98,28 @@ class _SignInState extends State<SignIn> {
                   ],
                 )),
           );
+  }
+
+  /// Alert the user that the password reset email was sent
+  void _openPopup(context) {
+    List<DialogButton> buttons = [
+      DialogButton(
+        color: accentColor1,
+        onPressed: () {
+          widget.toggleReset();
+          Navigator.pop(context);
+        },
+        child: Text(
+          "Okay",
+          style: TextStyle(color: backgroundColor, fontSize: 15),
+        ),
+      ),
+    ];
+
+    Alert(
+            context: context,
+            title: "Password reset email was sent!",
+            buttons: buttons)
+        .show();
   }
 }
