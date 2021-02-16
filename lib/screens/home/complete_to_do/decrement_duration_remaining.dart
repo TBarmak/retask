@@ -79,43 +79,56 @@ class _DecrementDurationRemainingState
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Spacer(flex: 2),
+                  widget.toDo.durationRemaining.inHours > 0
+                      ? NumberPicker.integer(
+                          listViewWidth: 150,
+                          textMapper: (val) {
+                            return val + " hr";
+                          },
+                          onChanged: (val) {
+                            setState(() {
+                              if (val ==
+                                      widget.toDo.durationRemaining.inHours &&
+                                  minutes > maxMinutes) {
+                                minutes = maxMinutes;
+                              }
+                              hours = val;
+                            });
+                          },
+                          initialValue: hours,
+                          minValue: 0,
+                          maxValue: widget.toDo.durationRemaining.inHours,
+                          selectedTextStyle:
+                              TextStyle(color: backgroundColor, fontSize: 30),
+                          textStyle:
+                              TextStyle(color: backgroundColor, fontSize: 15),
+                          decoration: BoxDecoration(
+                            border: Border(
+                              top: BorderSide(
+                                style: BorderStyle.solid,
+                                color: backgroundColor,
+                              ),
+                              bottom: BorderSide(
+                                style: BorderStyle.solid,
+                                color: backgroundColor,
+                              ),
+                            ),
+                          ),
+                        )
+                      : Container(),
+                  widget.toDo.durationRemaining.inHours > 0
+                      ? Spacer(flex: 1)
+                      : Container(),
                   NumberPicker.integer(
-                    onChanged: (val) {
-                      setState(() {
-                        if (val == widget.toDo.durationRemaining.inHours) {
-                          minutes = maxMinutes;
-                        }
-                        hours = val;
-                      });
-                    },
-                    initialValue: hours,
-                    minValue: 0,
-                    maxValue: widget.toDo.durationRemaining.inHours,
-                    selectedTextStyle:
-                        TextStyle(color: backgroundColor, fontSize: 30),
-                    textStyle: TextStyle(color: backgroundColor, fontSize: 15),
-                    decoration: BoxDecoration(
-                      border: Border(
-                        top: BorderSide(
-                          style: BorderStyle.solid,
-                          color: backgroundColor,
-                        ),
-                        bottom: BorderSide(
-                          style: BorderStyle.solid,
-                          color: backgroundColor,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 20),
-                  Text("hr",
-                      style: TextStyle(color: backgroundColor, fontSize: 30)),
-                  SizedBox(width: 20),
-                  NumberPicker.integer(
+                    listViewWidth: 150,
                     onChanged: (val) {
                       setState(() {
                         minutes = val;
                       });
+                    },
+                    textMapper: (val) {
+                      return val + " min";
                     },
                     initialValue: minutes,
                     minValue: 0,
@@ -139,9 +152,7 @@ class _DecrementDurationRemainingState
                       ),
                     ),
                   ),
-                  SizedBox(width: 20),
-                  Text("min",
-                      style: TextStyle(color: backgroundColor, fontSize: 30))
+                  Spacer(flex: 2),
                 ],
               ),
               RaisedButton(

@@ -192,76 +192,70 @@ class _EditToDoState extends State<EditToDo> {
               Spacer(flex: 1),
               duration != null
                   ? Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Flexible(
-                          child: Container(
-                            child: NumberPicker.integer(
-                              textMapper: (val) {
-                                return val == "1" ? val + " hr" : val + " hrs";
-                              },
-                              onChanged: (val) {
-                                setState(() {
-                                  hours = val;
-                                });
-                              },
-                              initialValue: hours,
-                              minValue: 0,
-                              maxValue: 100,
-                              selectedTextStyle:
-                                  TextStyle(color: Colors.white, fontSize: 30),
-                              textStyle:
-                                  TextStyle(color: Colors.white, fontSize: 15),
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  top: BorderSide(
-                                    style: BorderStyle.solid,
-                                    color: Colors.white,
-                                  ),
-                                  bottom: BorderSide(
-                                    style: BorderStyle.solid,
-                                    color: Colors.white,
-                                  ),
-                                ),
+                        Spacer(flex: 2),
+                        NumberPicker.integer(
+                          listViewWidth: 150,
+                          textMapper: (val) {
+                            return val == "1" ? val + " hr" : val + " hrs";
+                          },
+                          onChanged: (val) {
+                            setState(() {
+                              hours = val;
+                            });
+                          },
+                          initialValue: hours,
+                          minValue: 0,
+                          maxValue: 100,
+                          selectedTextStyle:
+                              TextStyle(color: Colors.white, fontSize: 30),
+                          textStyle:
+                              TextStyle(color: Colors.white, fontSize: 15),
+                          decoration: BoxDecoration(
+                            border: Border(
+                              top: BorderSide(
+                                style: BorderStyle.solid,
+                                color: Colors.white,
+                              ),
+                              bottom: BorderSide(
+                                style: BorderStyle.solid,
+                                color: Colors.white,
                               ),
                             ),
                           ),
                         ),
-                        Flexible(
-                          flex: 1,
-                          child: Container(
-                            alignment: Alignment(-0.8, 0),
-                            child: NumberPicker.integer(
-                              textMapper: (val) {
-                                return val + " min";
-                              },
-                              onChanged: (val) {
-                                setState(() {
-                                  minutes = val;
-                                });
-                              },
-                              initialValue: minutes,
-                              minValue: 0,
-                              maxValue: 100,
-                              selectedTextStyle:
-                                  TextStyle(color: Colors.white, fontSize: 30),
-                              textStyle:
-                                  TextStyle(color: Colors.white, fontSize: 15),
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  top: BorderSide(
-                                    style: BorderStyle.solid,
-                                    color: Colors.white,
-                                  ),
-                                  bottom: BorderSide(
-                                    style: BorderStyle.solid,
-                                    color: Colors.white,
-                                  ),
-                                ),
+                        Spacer(flex: 1),
+                        NumberPicker.integer(
+                          listViewWidth: 150,
+                          textMapper: (val) {
+                            return val + " min";
+                          },
+                          onChanged: (val) {
+                            setState(() {
+                              minutes = val;
+                            });
+                          },
+                          initialValue: minutes,
+                          minValue: 0,
+                          maxValue: 59,
+                          selectedTextStyle:
+                              TextStyle(color: Colors.white, fontSize: 30),
+                          textStyle:
+                              TextStyle(color: Colors.white, fontSize: 15),
+                          decoration: BoxDecoration(
+                            border: Border(
+                              top: BorderSide(
+                                style: BorderStyle.solid,
+                                color: Colors.white,
+                              ),
+                              bottom: BorderSide(
+                                style: BorderStyle.solid,
+                                color: Colors.white,
                               ),
                             ),
                           ),
                         ),
+                        Spacer(flex: 2),
                       ],
                     )
                   : Row(

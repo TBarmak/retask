@@ -50,8 +50,10 @@ class EnterDuration extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               NumberPicker.integer(
+                listViewWidth: 150,
                 textMapper: (val) {
                   return val + " hr";
                 },
@@ -61,7 +63,7 @@ class EnterDuration extends StatelessWidget {
                 initialValue: getHours() ?? 1,
                 minValue: 0,
                 maxValue: 100,
-                selectedTextStyle: TextStyle(color: Colors.white, fontSize: 25),
+                selectedTextStyle: TextStyle(color: Colors.white, fontSize: 30),
                 textStyle: TextStyle(color: Colors.white, fontSize: 15),
                 decoration: BoxDecoration(
                   border: Border(
@@ -78,6 +80,7 @@ class EnterDuration extends StatelessWidget {
               ),
               SizedBox(width: 20),
               NumberPicker.integer(
+                listViewWidth: 150,
                 textMapper: (val) {
                   return val + " min";
                 },
@@ -87,7 +90,7 @@ class EnterDuration extends StatelessWidget {
                 initialValue: getMinutes() ?? 0,
                 minValue: 0,
                 maxValue: 59,
-                selectedTextStyle: TextStyle(color: Colors.white, fontSize: 25),
+                selectedTextStyle: TextStyle(color: Colors.white, fontSize: 30),
                 textStyle: TextStyle(color: Colors.white, fontSize: 15),
                 decoration: BoxDecoration(
                   border: Border(
